@@ -400,9 +400,32 @@ db.ref('.info/connected').on('value',snap=>{
   else{connDot.classList.remove('on');connText.textContent='Bağlantı Kesildi';}
 });
 
+let lastScoreSig=null;
+
+function scoreSig(){
+  if(!currentRoomKey)return null;
+  const room=roomsData[currentRoomKey];
+  if(!room||!room.meta)return null;
+  if(room.meta.game==='monopoly')return 'mp|'+currentRoomKey+'|'+JSON.stringify(room);
+  if(room.meta.game!=='okey')return null;
+  if(!room.okey)return 'ok|'+currentRoomKey+'|'+JSON.stringify(room);
+  const {currentScores,...okeyRest}=room.okey;
+  return 'ok|'+currentRoomKey+'|'+JSON.stringify({...room,okey:okeyRest});
+}
+
+function patchScoreInputs(){
+  document.querySelectorAll('.okey-score-input').forEach(inp=>{
+    if(document.activeElement===inp)return;
+    const v=String(okeyCurrentScore(+inp.dataset.side));
+    if(inp.value!==v)inp.value=v;
+  });
+}
+
 roomsRef.on('value',(snap)=>{
   roomsData=snap.val()||{};
   syncCurrentRoomState();
+  const sig=scoreSig();
+  if(sig!==null&&sig===lastScoreSig){patchScoreInputs();return;}
   render();
 });
 
@@ -600,6 +623,7 @@ function resetGame(){
    ========================================================= */
 
 function render(){
+  lastScoreSig=scoreSig();
   const inRoom=currentRoomKey!==null;
   const room=inRoom?roomsData[currentRoomKey]:null;
   const gameType=room&&room.meta?room.meta.game:null;
@@ -667,7 +691,8 @@ function renderRoomsList(){
         if(room.okey && room.okey.config){
           const sides=room.okey.config.sides||[];
           const roundsPlayed=room.okey.rounds?Object.keys(room.okey.rounds).length:0;
-          subtitle=sides.length+' taraf • Tur '+roundsPlayed+'/'+room.okey.config.roundCount;
+          const isTeam=sides.length===2&&sides[0].members.length===2;
+          subtitle=(isTeam?'Eşli':'Tekli')+' • Tur '+roundsPlayed+'/'+room.okey.config.roundCount;
         }else{
           subtitle='Kurulum bekleniyor';
         }
@@ -997,6 +1022,11 @@ function okeyFmt(n){return new Intl.NumberFormat('tr-TR').format(n);}
 
 function okeySides(){return (okeyData && okeyData.config && okeyData.config.sides)||[];}
 
+function okeyIsTeamGame(){
+  const s=okeySides();
+  return s.length===2&&s[0].members.length===2;
+}
+
 function okeyRoundsArray(){
   const roundsObj=(okeyData&&okeyData.rounds)||{};
   return Object.keys(roundsObj).sort().map(k=>({key:k,...roundsObj[k]}));
@@ -1121,10 +1151,20 @@ function setScore(i,value){
   roomRef('okey/currentScores/'+i).set(value);
 }
 
+function okeyScoreInput(i){
+  return document.querySelector('.okey-score-input[data-side="'+i+'"]');
+}
+
+function okeyScoreFromDom(i){
+  const el=okeyScoreInput(i);
+  return el?el.value.trim():okeyCurrentScore(i);
+}
+
 function quickMinus100(i){
-  const current=Number(okeyCurrentScore(i))||0;
-  const next=current-100;
-  roomRef('okey/currentScores/'+i).set(String(next));
+  const next=String((Number(okeyScoreFromDom(i))||0)-100);
+  const el=okeyScoreInput(i);
+  if(el)el.value=next;
+  roomRef('okey/currentScores/'+i).set(next);
   toast(okeySides()[i].name+': -100 uygulandı.');
 }
 
@@ -1142,8 +1182,9 @@ function commitRound(){
   const scores=[];
 
   for(let i=0;i<sides.length;i++){
-    const v=okeyCurrentScore(i);
-    if(v===''||!Number.isFinite(Number(v))){toast('Bu tur için tüm puanları girin.');return;}
+    const v=okeyScoreFromDom(i);
+    if(v===''){scores.push(0);continue;}
+    if(!Number.isFinite(Number(v))){toast('Geçerli bir puan girin.');return;}
     scores.push(Number(v));
   }
 
@@ -1174,7 +1215,7 @@ function okey_renderGameBase(){
   if(isFinal){
     const min=Math.min(...finalInfo.totals), winners=finalInfo.leaders;
     const max=Math.max(...finalInfo.totals), diff=max-min;
-    result=`<div class="result">${winners.length>1?'🤝 Berabere tamamlandı!':`🏆 Kazanan: ${esc(sides[winners[0]].name)}`}<small>${diff?`En yüksek skorla fark: ${okeyFmt(diff)} puan`:'Tüm taraflar aynı puanda.'}</small></div>`;
+    result=`<div class="result">${winners.length>1?'🤝 Berabere tamamlandı!':`🏆 Kazanan: ${esc(sides[winners[0]].name)}`}<small>${diff?`${okeyIsTeamGame()?'Aradaki fark':'En yüksek skorla fark'}: ${okeyFmt(diff)} puan`:'Tüm taraflar aynı puanda.'}</small></div>`;
   }else if(isLast&&roundsArr.length){
     const low=Math.min(...info.totals),leaders=info.leaders,max=Math.max(...info.totals),diff=max-low;
     result=`<div class="info">Son tura giriliyor. ${leaders.length===1?`<b>${esc(sides[leaders[0]].name)}</b> yeşil gösterilir ve ${okeyFmt(diff)} puan öndedir.`:'Puanlar şu an eşit.'}</div>`;
@@ -1206,7 +1247,7 @@ function okey_renderGameBase(){
               ${!isFinal?`
                 <div class="entry-label">Bu tur puanı</div>
                 <div class="score-entry">
-                  <input type="number" inputmode="decimal" value="${esc(currentScore)}" placeholder="0" onchange="setScore(${i},this.value)">
+                  <input class="okey-score-input" data-side="${i}" type="number" inputmode="decimal" value="${esc(currentScore)}" placeholder="0" onchange="setScore(${i},this.value)">
                   <button class="btn hundred" onclick="quickMinus100(${i})">−100</button>
                 </div>`:''}
             </div>`;
@@ -1249,7 +1290,7 @@ function okey_renderGame(){
             return `<div class="history-line"><span>${rank+1}. ${esc(side.name)} ${leaders.includes(i)&&difference?'🟢':''}</span><b style="${leaders.includes(i)&&difference?'color:#2e7d32':''}">${okeyFmt(currentTotals[i])}${gap?` <small style="color:#777;font-weight:normal">(+${okeyFmt(gap)} fark)</small>`:' <small style="color:#2e7d32;font-weight:normal">(en düşük)</small>'}</b></div>`;
           }).join('')}
         </div>
-        <div class="result" style="margin:14px 0 0">${difference?(leaders.length===1?`${esc(sides[leaders[0]].name)} önde`:'Puanlar eşit')+' · En yüksek fark: '+okeyFmt(difference)+' puan':'Puanlar eşit · Fark: 0 puan'}</div>
+        <div class="result" style="margin:14px 0 0">${difference?(leaders.length===1?`${esc(sides[leaders[0]].name)} önde`:'Puanlar eşit')+' · '+(okeyIsTeamGame()?'Aradaki fark':'En yüksek fark')+': '+okeyFmt(difference)+' puan':'Puanlar eşit · Fark: 0 puan'}</div>
       </div>`;
     el.querySelector('.hero').insertAdjacentHTML('afterend',differenceHtml);
   }
