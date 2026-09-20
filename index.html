@@ -674,6 +674,7 @@ function render(){
   document.getElementById('okeyGamePage').classList.toggle('active',showOkeyGame);
   document.getElementById('unoSetupPage').classList.toggle('active',showUnoSetup);
   document.getElementById('unoGamePage').classList.toggle('active',showUnoGame);
+  if(!showUnoSetup)document.getElementById('unoSetupPage').innerHTML='';
 
   document.getElementById('mainNav').style.display=showMonopoly?'flex':'none';
 
@@ -1438,18 +1439,19 @@ function uno_renderSetup(){
       <div id="unoPlayerFields"></div>
       <button class="btn primary full" style="margin-top:20px" onclick="uno_createGame()">OYUNU BAŞLAT</button>
     </div>`;
-  uno_drawPlayerFields();
+  uno_drawPlayerFields(true);
   uno_setMode(unoSetupMode);
 }
 
-function uno_drawPlayerFields(){
-  const old=[...document.querySelectorAll('.unoPlayerField')].map(x=>x.value);
+function uno_drawPlayerFields(fresh){
+  const old=fresh?[]:[...document.querySelectorAll('.unoPlayerField')].map(x=>x.value);
+  const tag=Date.now();
   const n=+document.getElementById('unoPlayerCount').value;
   document.getElementById('unoPlayerFields').innerHTML=`
     <label>Oyuncu adları</label>
     ${Array.from({length:n},(_,i)=>`
       <div class="player-setup">
-        <input class="unoPlayerField" maxlength="30" placeholder="Oyuncu ${i+1}" value="${esc(old[i]||'')}">
+        <input class="unoPlayerField" name="uno_${tag}_${i}" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" maxlength="30" placeholder="Oyuncu ${i+1}" value="${esc(old[i]||'')}">
         <span></span>
       </div>`).join('')}`;
 }
