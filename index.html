@@ -156,8 +156,15 @@ dialog::backdrop{background:#0006}
 .toast{position:fixed;left:50%;bottom:85px;transform:translateX(-50%);background:#333;color:#fff;padding:13px 18px;border-radius:10px;z-index:20;display:none;max-width:90%;text-align:center}
 .toast.show{display:block}
 
-.game-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.game-choice{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .game-choice button{height:64px;font-size:14px}
+.uno-table{width:100%;border-collapse:collapse;font-size:14px}
+.uno-table th,.uno-table td{padding:9px 8px;text-align:center;border-bottom:1px solid #eee;white-space:nowrap}
+.uno-table th{font-size:12px;color:#555}
+.uno-table th:first-child,.uno-table td:first-child{text-align:left;position:sticky;left:0;background:#fff;color:#777;font-size:12px}
+.uno-table small{color:#777;font-weight:normal}
+.uno-table .tot td{font-weight:bold;border-top:2px solid #7e57c2;border-bottom:0;color:#202124}
+.uno-table .tot td:first-child{color:#4527a0}
 
 /* =========================================================
    OYUNCU GRID SİSTEMİ (Monopoly)
@@ -294,6 +301,8 @@ dialog::backdrop{background:#0006}
   <section id="monopolyHistoryPage" class="page"></section>
   <section id="okeySetupPage" class="page"></section>
   <section id="okeyGamePage" class="page"></section>
+  <section id="unoSetupPage" class="page"></section>
+  <section id="unoGamePage" class="page"></section>
 </main>
 
 <nav id="mainNav" class="nav" style="display:none">
@@ -321,6 +330,7 @@ dialog::backdrop{background:#0006}
       <div class="game-choice">
         <button type="button" id="gameChoiceMonopoly" class="btn tonal" onclick="selectNewRoomGame('monopoly')">🎩<br>Monopoly</button>
         <button type="button" id="gameChoiceOkey" class="btn outline" onclick="selectNewRoomGame('okey')">🀄<br>101 Okey</button>
+        <button type="button" id="gameChoiceUno" class="btn outline" onclick="selectNewRoomGame('uno')">🃏<br>UNO</button>
       </div>
     </div>
     <div class="dialog-actions">
@@ -392,6 +402,10 @@ let selectedFrom=null, selectedTo=null, amountValue='';
 /* 101 Okey durumu */
 let okeyData=null;
 
+/* UNO durumu */
+let unoData=null;
+let unoSetupMode='high';
+
 const connDot=document.getElementById('connDot');
 const connText=document.getElementById('connText');
 
@@ -407,6 +421,11 @@ function scoreSig(){
   const room=roomsData[currentRoomKey];
   if(!room||!room.meta)return null;
   if(room.meta.game==='monopoly')return 'mp|'+currentRoomKey+'|'+JSON.stringify(room);
+  if(room.meta.game==='uno'){
+    if(!room.uno)return 'un|'+currentRoomKey+'|'+JSON.stringify(room);
+    const {currentScores:_cs,...unoRest}=room.uno;
+    return 'un|'+currentRoomKey+'|'+JSON.stringify({...room,uno:unoRest});
+  }
   if(room.meta.game!=='okey')return null;
   if(!room.okey)return 'ok|'+currentRoomKey+'|'+JSON.stringify(room);
   const {currentScores,...okeyRest}=room.okey;
@@ -414,9 +433,9 @@ function scoreSig(){
 }
 
 function patchScoreInputs(){
-  document.querySelectorAll('.okey-score-input').forEach(inp=>{
+  document.querySelectorAll('.okey-score-input,.uno-score-input').forEach(inp=>{
     if(document.activeElement===inp)return;
-    const v=String(okeyCurrentScore(+inp.dataset.side));
+    const v=String(inp.classList.contains('uno-score-input')?unoCurrentScore(+inp.dataset.side):okeyCurrentScore(+inp.dataset.side));
     if(inp.value!==v)inp.value=v;
   });
 }
@@ -438,7 +457,7 @@ function syncCurrentRoomState(){
   if(!currentRoomKey){
     playersObj={};transactionsObj={};players=[];transactions=[];
     selectedFrom=null;selectedTo=null;amountValue='';
-    okeyData=null;
+    okeyData=null;unoData=null;
     return;
   }
 
@@ -454,6 +473,8 @@ function syncCurrentRoomState(){
     if(selectedTo!==null && !playersObj[selectedTo])selectedTo=null;
   } else if(gameType==='okey'){
     okeyData=room.okey||null;
+  } else if(gameType==='uno'){
+    unoData=room.uno||null;
   }
 }
 
@@ -493,6 +514,7 @@ function selectNewRoomGame(g){
   newRoomGame=g;
   document.getElementById('gameChoiceMonopoly').className='btn '+(g==='monopoly'?'tonal':'outline');
   document.getElementById('gameChoiceOkey').className='btn '+(g==='okey'?'tonal':'outline');
+  document.getElementById('gameChoiceUno').className='btn '+(g==='uno'?'tonal':'outline');
 }
 
 function openRoomDialog(){
@@ -615,6 +637,11 @@ function resetGame(){
     if(!confirm('Bu masadaki oyun verileri silinecek ve kurulum ekranına dönülecek. Emin misin?'))return;
     roomRef('okey').remove();
     toast('Oyun sıfırlandı.',true);
+  } else if(room.meta.game==='uno'){
+    if(!unoData)return;
+    if(!confirm('Bu masadaki oyun verileri silinecek ve kurulum ekranına dönülecek. Emin misin?'))return;
+    roomRef('uno').remove();
+    toast('Oyun sıfırlandı.',true);
   }
 }
 
@@ -633,11 +660,15 @@ function render(){
   const showMonopoly=inRoom && gameType==='monopoly';
   const showOkeySetup=inRoom && gameType==='okey' && !(room.okey && room.okey.config);
   const showOkeyGame=inRoom && gameType==='okey' && !!(room.okey && room.okey.config);
+  const showUnoSetup=inRoom && gameType==='uno' && !(room.uno && room.uno.config);
+  const showUnoGame=inRoom && gameType==='uno' && !!(room.uno && room.uno.config);
 
   document.getElementById('monopolyPosPage').classList.toggle('active',showMonopoly && currentPage===0);
   document.getElementById('monopolyHistoryPage').classList.toggle('active',showMonopoly && currentPage===1);
   document.getElementById('okeySetupPage').classList.toggle('active',showOkeySetup);
   document.getElementById('okeyGamePage').classList.toggle('active',showOkeyGame);
+  document.getElementById('unoSetupPage').classList.toggle('active',showUnoSetup);
+  document.getElementById('unoGamePage').classList.toggle('active',showUnoGame);
 
   document.getElementById('mainNav').style.display=showMonopoly?'flex':'none';
 
@@ -655,7 +686,7 @@ function render(){
   addBtn.title=players.length>=6?'Maksimum 6 oyuncu':'Oyuncu ekle';
 
   document.getElementById('appTitle').textContent=(room&&room.meta&&room.meta.name)?room.meta.name:'OYUN MASASI';
-  document.getElementById('appLogo').textContent=!inRoom?'🎲':(gameType==='monopoly'?'🎩':'🀄');
+  document.getElementById('appLogo').textContent=!inRoom?'🎲':(gameType==='monopoly'?'🎩':(gameType==='uno'?'🃏':'🀄'));
   document.getElementById('appLogo').style.display=!inRoom?'':'none';
 
   if(!inRoom){renderRoomsList();return;}
@@ -663,6 +694,8 @@ function render(){
   if(showMonopoly){mp_renderPOS();mp_renderHistory();}
   else if(showOkeySetup){okey_renderSetup();}
   else if(showOkeyGame){okey_renderGame();}
+  else if(showUnoSetup){uno_renderSetup();}
+  else if(showUnoGame){uno_renderGame();}
 }
 
 function renderRoomsList(){
@@ -679,8 +712,8 @@ function renderRoomsList(){
       const room=roomsData[k];
       const meta=room.meta||{name:'İsimsiz Masa'};
       const gameType=meta.game;
-      const icon=gameType==='okey'?'🀄':'🎩';
-      const gameName=gameType==='okey'?'101 Okey':'Monopoly';
+      const icon=gameType==='okey'?'🀄':(gameType==='uno'?'🃏':'🎩');
+      const gameName=gameType==='okey'?'101 Okey':(gameType==='uno'?'UNO':'Monopoly');
 
       let subtitle='';
       if(gameType==='monopoly'){
@@ -693,6 +726,15 @@ function renderRoomsList(){
           const roundsPlayed=room.okey.rounds?Object.keys(room.okey.rounds).length:0;
           const isTeam=sides.length===2&&sides[0].members.length===2;
           subtitle=(isTeam?'Eşli':'Tekli')+' • Tur '+roundsPlayed+'/'+room.okey.config.roundCount;
+        }else{
+          subtitle='Kurulum bekleniyor';
+        }
+      } else if(gameType==='uno'){
+        const u=room.uno;
+        if(u && u.config){
+          const played=u.rounds?Object.keys(u.rounds).length:0;
+          const low=u.config.mode==='low';
+          subtitle=(low?'Düşük puan':'Yüksek puan')+' • '+u.config.players.length+' oyuncu • Tur '+played+(low?'/'+u.config.roundCount:'');
         }else{
           subtitle='Kurulum bekleniyor';
         }
@@ -1318,12 +1360,188 @@ function okey_renderGame(){
   if(roundsArr.length)el.insertAdjacentHTML('beforeend',`
     <div class="card">
       <h2 class="section-title">🧾 Önceki Turlar</h2>
-      ${roundsArr.map((round,index)=>`
-        <div class="history-round">
-          <div class="history-head">Tur ${index+1}<span>${new Date(round.time).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'})}</span></div>
-          <div class="history-lines">${sides.map((side,i)=>`<div class="history-line"><span>${esc(side.name)}</span><b class="${round.scores[i]<0?'negative':''}">${round.scores[i]>0?'+':''}${okeyFmt(round.scores[i])}</b></div>`).join('')}</div>
-        </div>`).join('')}
+      <div style="overflow-x:auto">
+        <table class="uno-table">
+          <thead><tr><th></th>${sides.map(side=>`<th>${esc(side.name)}</th>`).join('')}</tr></thead>
+          <tbody>${roundsArr.map((round,index)=>`<tr><td>Tur ${index+1}</td>${sides.map((side,i)=>`<td class="${round.scores[i]<0?'negative':''}">${okeyFmt(round.scores[i])}</td>`).join('')}</tr>`).join('')}${showPreFinal?`<tr class="tot"><td>Toplam</td>${okeyTotals(false).map((t,i)=>{const pen=okeyPenaltyTotal(i);return `<td>${okeyFmt(t)}${pen?`<br><small>(${pen>0?'+':''}${okeyFmt(pen)} ceza)</small>`:''}</td>`;}).join('')}</tr>`:''}</tbody>
+        </table>
+      </div>
     </div>`);
+}
+
+/* =========================================================
+   UNO
+   ========================================================= */
+
+const unoFmt=n=>new Intl.NumberFormat('tr-TR').format(n);
+function unoPlayers(){return (unoData&&unoData.config&&unoData.config.players)||[];}
+function unoRoundsArray(){
+  const o=(unoData&&unoData.rounds)||{};
+  return Object.keys(o).sort().map(k=>({key:k,...o[k]}));
+}
+function unoCurrentScore(i){
+  const cs=(unoData&&unoData.currentScores)||[];
+  const v=cs[i];
+  return v===undefined||v===null?'':v;
+}
+function unoTotals(){
+  const rounds=unoRoundsArray();
+  return unoPlayers().map((_,i)=>rounds.reduce((s,r)=>s+((r.scores&&r.scores[i])||0),0));
+}
+function unoRanks(scores){
+  const low=!!(unoData&&unoData.config&&unoData.config.mode==='low');
+  return scores.map(s=>1+scores.filter(x=>low?x<s:x>s).length);
+}
+function unoSetScore(i,v){roomRef('uno/currentScores/'+i).set(v);}
+function unoScoreFromDom(i){
+  const el=document.querySelector('.uno-score-input[data-side="'+i+'"]');
+  return el?el.value.trim():unoCurrentScore(i);
+}
+
+function uno_setMode(m){
+  unoSetupMode=m;
+  document.getElementById('unoModeHigh').className='btn '+(m==='high'?'tonal':'outline');
+  document.getElementById('unoModeLow').className='btn '+(m==='low'?'tonal':'outline');
+  document.getElementById('unoHighBox').style.display=m==='high'?'':'none';
+  document.getElementById('unoLowBox').style.display=m==='low'?'':'none';
+}
+
+function uno_renderSetup(){
+  document.getElementById('unoSetupPage').innerHTML=`
+    <div class="card"><h2 class="setup-title">🃏 UNO Kurulumu</h2>
+      <div class="field">
+        <label>Oyun şekli</label>
+        <div class="game-choice" style="grid-template-columns:1fr 1fr">
+          <button type="button" id="unoModeHigh" class="btn outline" onclick="uno_setMode('high')">⬆️<br>YÜKSEK PUAN</button>
+          <button type="button" id="unoModeLow" class="btn outline" onclick="uno_setMode('low')">⬇️<br>DÜŞÜK PUAN</button>
+        </div>
+      </div>
+      <div id="unoHighBox" class="field">
+        <label>Hedef puan</label>
+        <input id="unoTarget" type="number" inputmode="numeric" value="500">
+        <div class="helper">Hedef puana ilk ulaşan oyuncu kazanır.</div>
+      </div>
+      <div id="unoLowBox" class="field">
+        <label>Tur sayısı</label>
+        <select id="unoRoundCount">${Array.from({length:20},(_,i)=>`<option value="${i+1}" ${i===4?'selected':''}>${i+1} tur</option>`).join('')}</select>
+        <div class="helper">Tur sayısı bitince en düşük puanlı oyuncu kazanır.</div>
+      </div>
+      <div class="field">
+        <label>Oyuncu sayısı</label>
+        <select id="unoPlayerCount" onchange="uno_drawPlayerFields()">${Array.from({length:9},(_,i)=>`<option value="${i+2}" ${i+2===4?'selected':''}>${i+2} oyuncu</option>`).join('')}</select>
+      </div>
+      <div id="unoPlayerFields"></div>
+      <button class="btn primary full" style="margin-top:20px" onclick="uno_createGame()">OYUNU BAŞLAT</button>
+    </div>`;
+  uno_drawPlayerFields();
+  uno_setMode(unoSetupMode);
+}
+
+function uno_drawPlayerFields(){
+  const old=[...document.querySelectorAll('.unoPlayerField')].map(x=>x.value);
+  const n=+document.getElementById('unoPlayerCount').value;
+  document.getElementById('unoPlayerFields').innerHTML=`
+    <label>Oyuncu adları</label>
+    ${Array.from({length:n},(_,i)=>`
+      <div class="player-setup">
+        <input class="unoPlayerField" maxlength="30" placeholder="Oyuncu ${i+1}" value="${esc(old[i]||'')}">
+        <span></span>
+      </div>`).join('')}`;
+}
+
+function uno_createGame(){
+  const names=[...document.querySelectorAll('.unoPlayerField')].map(x=>x.value.trim());
+  if(names.some(x=>!x)){toast('Tüm oyuncuların adını yazın.');return;}
+  const cfg={mode:unoSetupMode,players:names};
+  if(unoSetupMode==='low'){
+    cfg.roundCount=+document.getElementById('unoRoundCount').value;
+  }else{
+    const t=parseInt(document.getElementById('unoTarget').value);
+    if(!t||t<=0){toast('Geçerli bir hedef puan girin.');return;}
+    cfg.target=t;
+  }
+  roomRef('uno').set({config:cfg,currentScores:names.map(()=>''),rounds:{},finished:false});
+  toast('Oyun başlatıldı.',true);
+}
+
+function uno_commitRound(){
+  const names=unoPlayers(), cfg=unoData.config;
+  const scores=[];
+  for(let i=0;i<names.length;i++){
+    const v=unoScoreFromDom(i);
+    if(v===''){scores.push(0);continue;}
+    if(!Number.isFinite(Number(v))){toast('Geçerli bir puan girin.');return;}
+    scores.push(Number(v));
+  }
+  const roundKey=roomRef('uno/rounds').push().key;
+  const updates={};
+  updates['uno/rounds/'+roundKey]={scores,time:Date.now()};
+  names.forEach((_,i)=>{updates['uno/currentScores/'+i]='';});
+  const count=unoRoundsArray().length+1;
+  const totals=unoTotals().map((t,i)=>t+scores[i]);
+  const done=cfg.mode==='low'?count>=cfg.roundCount:totals.some(t=>t>=cfg.target);
+  if(done)updates['uno/finished']=true;
+  roomRef().update(updates);
+  toast(done?'Oyun tamamlandı.':(count+'. tur kaydedildi.'),true);
+}
+
+function uno_renderGame(){
+  const el=document.getElementById('unoGamePage');
+  const names=unoPlayers(), cfg=unoData.config, low=cfg.mode==='low';
+  const rounds=unoRoundsArray(), totals=unoTotals(), done=!!unoData.finished;
+  const current=rounds.length+1;
+  const best=low?Math.min(...totals):Math.max(...totals);
+  const leaders=totals.map((t,i)=>t===best?i:-1).filter(i=>i>=0);
+  const allSame=totals.every(t=>t===totals[0]);
+  const last=rounds.length?rounds[rounds.length-1]:null;
+  const lastSc=last?names.map((_,i)=>(last.scores&&last.scores[i])||0):[];
+  const lastRk=unoRanks(totals);
+  const isLast=low&&current===cfg.roundCount;
+  const time=t=>new Date(t).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
+
+  el.innerHTML=`
+    <div class="hero">
+      <div class="round">${done?'OYUN TAMAMLANDI':(low?`TUR ${current} / ${cfg.roundCount}`:`TUR ${current}`)}</div>
+      <div class="big">${done?'Sonuçlar hazır':'UNO Skor'}</div>
+      <div class="sub">${low?'Düşük puan kazanır':'Yüksek puan kazanır • Hedef '+unoFmt(cfg.target)}</div>
+      ${low?`<div class="progress">${Array.from({length:cfg.roundCount},(_,i)=>`<span class="${i<rounds.length?'done':(i===rounds.length&&!done?'now':'')}"></span>`).join('')}</div>`:''}
+    </div>
+    ${done?`<div class="result">${leaders.length>1?'🤝 Berabere tamamlandı!':`🏆 Kazanan: ${esc(names[leaders[0]])}`}<small>${leaders.length>1?leaders.map(i=>esc(names[i])).join(' & ')+' • ':''}${unoFmt(best)} puan</small></div>`:''}
+    <div class="card">
+      <h2 class="section-title">${done?'Nihai Puanlar':`Tur ${current} Puanları`}</h2>
+      <div class="score-grid">
+        ${names.map((name,i)=>`
+          <div class="score-card ${!allSame&&leaders.includes(i)?'leading':''}">
+            <div class="score-name">${esc(name)}</div>
+            <div class="score-note">Toplam puan</div>
+            <div class="score-total">${unoFmt(totals[i])}</div>
+            <div class="score-note">${last?`Önceki tur: ${unoFmt(lastSc[i])} (${lastRk[i]}.)`:'Henüz tur oynanmadı'}</div>
+            ${!done?`
+              <div class="entry-label">Bu tur puanı</div>
+              <div class="score-entry">
+                <input class="uno-score-input" data-side="${i}" type="number" inputmode="decimal" value="${esc(unoCurrentScore(i))}" placeholder="0" onchange="unoSetScore(${i},this.value)">
+              </div>`:''}
+          </div>`).join('')}
+      </div>
+      ${!done?`<button class="btn primary full" style="margin-top:18px" onclick="uno_commitRound()">${isLast?'SON TURU BİTİR VE KAZANANI GÖSTER':'TURU KAYDET'}</button>`:''}
+    </div>
+    ${rounds.length?`
+    <div class="card">
+      <h2 class="section-title">🧾 Turlar</h2>
+      <div style="overflow-x:auto">
+        <table class="uno-table">
+          <thead><tr><th></th>${names.map(n=>`<th>${esc(n)}</th>`).join('')}</tr></thead>
+          <tbody>
+            ${rounds.map((r,ri)=>{
+              const sc=names.map((_,i)=>(r.scores&&r.scores[i])||0);
+              return `<tr><td>${ri+1}. tur</td>${names.map((n,i)=>`<td class="${sc[i]<0?'negative':''}">${unoFmt(sc[i])}</td>`).join('')}</tr>`;
+            }).join('')}
+            <tr class="tot"><td>Toplam</td>${names.map((n,i)=>`<td>${unoFmt(totals[i])} <small>(${lastRk[i]}.)</small></td>`).join('')}</tr>
+          </tbody>
+        </table>
+      </div>
+    </div>`:''}
+  `;
 }
 
 /* =========================================================
