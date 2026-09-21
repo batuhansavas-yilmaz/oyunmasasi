@@ -163,6 +163,8 @@ dialog::backdrop{background:#0006}
 
 .game-choice{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .game-choice button{height:64px;font-size:14px}
+.room-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.room-chips .btn{padding:9px 12px;font-size:13px}
 .uno-table{width:100%;border-collapse:collapse;font-size:14px}
 .uno-table th,.uno-table td{padding:9px 8px;text-align:center;border-bottom:1px solid #eee;white-space:nowrap}
 .uno-table th{font-size:12px;color:#555}
@@ -323,7 +325,8 @@ dialog::backdrop{background:#0006}
     <h3>Masa Ekle</h3>
     <div class="field">
       <label>Masa adı</label>
-      <input id="roomName" placeholder="Örn: Masa 1">
+      <input id="roomName" placeholder="Örn: Masa 1" oninput="hideRoomNameError()">
+      <div id="roomNameError" class="helper" style="color:#c62828;display:none"></div>
     </div>
     <div class="field">
       <label>Şifre (opsiyonel)</label>
@@ -399,6 +402,8 @@ let pendingRoomKey=null;
 let pendingRoomAction=null;
 let currentPage=0;
 let newRoomGame='monopoly';
+let roomFilter='all';
+let roomSearch='';
 
 /* Monopoly durumu */
 let playersObj={}, transactionsObj={}, players=[], transactions=[];
@@ -517,6 +522,7 @@ function roomRef(sub){
 
 function selectNewRoomGame(g){
   newRoomGame=g;
+  hideRoomNameError();
   document.getElementById('gameChoiceMonopoly').className='btn '+(g==='monopoly'?'tonal':'outline');
   document.getElementById('gameChoiceOkey').className='btn '+(g==='okey'?'tonal':'outline');
   document.getElementById('gameChoiceUno').className='btn '+(g==='uno'?'tonal':'outline');
@@ -524,6 +530,7 @@ function selectNewRoomGame(g){
 
 function openRoomDialog(){
   document.getElementById('roomName').value='';
+  hideRoomNameError();
   document.getElementById('roomPassword').value='';
   selectNewRoomGame('monopoly');
   document.getElementById('roomDialog').showModal();
@@ -532,6 +539,16 @@ function openRoomDialog(){
 function createRoom(){
   const name=document.getElementById('roomName').value.trim();
   if(!name){toast('Masa adı gir.');return;}
+
+  const norm=x=>String(x||'').trim().toLocaleLowerCase('tr-TR');
+  const exists=Object.values(roomsData).some(r=>r&&r.meta&&(r.meta.game||'monopoly')===newRoomGame&&norm(r.meta.name)===norm(name));
+  if(exists){
+    const err=document.getElementById('roomNameError');
+    err.textContent='Bu oyunda "'+name+'" adında bir masa zaten var. Farklı bir isim seç.';
+    err.style.display='block';
+    document.getElementById('roomName').focus();
+    return;
+  }
 
   const password=document.getElementById('roomPassword').value.trim();
   const newRef=roomsRef.push();
@@ -704,11 +721,39 @@ function render(){
   else if(showUnoGame){uno_renderGame();}
 }
 
-function renderRoomsList(){
-  const keys=Object.keys(roomsData);
+function hideRoomNameError(){
+  const e=document.getElementById('roomNameError');
+  if(e)e.style.display='none';
+}
 
-  document.getElementById('roomsPage').innerHTML=`
-    ${keys.length?`
+function setRoomFilter(f){roomFilter=f;renderRoomsList();}
+function onRoomSearch(v){roomSearch=v;renderRoomsList();}
+
+function renderRoomsList(){
+  const allKeys=Object.keys(roomsData);
+  const q=roomSearch.trim().toLocaleLowerCase('tr-TR');
+  const keys=allKeys.filter(k=>{
+    const meta=(roomsData[k]&&roomsData[k].meta)||{};
+    if(q)return String(meta.name||'İsimsiz Masa').toLocaleLowerCase('tr-TR').includes(q);
+    return roomFilter==='all'||(meta.game||'monopoly')===roomFilter;
+  });
+
+  if(!document.getElementById('roomsListBody')){
+    document.getElementById('roomsPage').innerHTML=`
+      <div class="card" id="roomFilterBar">
+        <input id="roomSearch" type="search" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="🔍 Masa ara..." value="${esc(roomSearch)}" oninput="onRoomSearch(this.value)">
+        <div class="room-chips" id="roomChips"></div>
+        <div class="helper" id="roomSearchHint" style="display:none">Arama tüm oyunlardaki masalarda yapılıyor.</div>
+      </div>
+      <div id="roomsListBody"></div>`;
+  }
+  document.getElementById('roomFilterBar').style.display=allKeys.length?'':'none';
+  document.getElementById('roomSearchHint').style.display=q?'':'none';
+  document.getElementById('roomChips').innerHTML=[['all','Tümü'],['monopoly','🎩 Monopoly'],['okey','🀄 101 Okey'],['uno','🃏 UNO']]
+    .map(([f,l])=>`<button type="button" class="btn ${!q&&roomFilter===f?'tonal':'outline'}" onclick="setRoomFilter('${f}')">${l}</button>`).join('');
+
+  document.getElementById('roomsListBody').innerHTML=`
+    ${allKeys.length?`
     <div class="card players-head">
       <div><h2>🎲 Masalar</h2><span>${keys.length} Masa</span></div>
       <button class="btn primary" onclick="openRoomDialog()">＋ Masa Ekle</button>
@@ -763,12 +808,16 @@ function renderRoomsList(){
             <button class="btn danger" onclick="deleteRoom('${k}')">🗑️ Sil</button>
           </div>
         </div>`;
-    }).join(''):`
+    }).join(''):(allKeys.length?`
+      <div class="card empty">
+        <div class="big">🔍</div>
+        <h3>Eşleşen masa bulunamadı.</h3>
+      </div>`:`
       <div class="card empty">
         <div class="big">🎲</div>
         <h3>Henüz masa yok.</h3>
         <button class="btn primary" onclick="openRoomDialog()">＋ İlk Masayı Oluştur</button>
-      </div>`}
+      </div>`)}
   `;
 }
 
