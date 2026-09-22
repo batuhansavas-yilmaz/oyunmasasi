@@ -365,6 +365,7 @@ dialog::backdrop{background:#0006}
   <div class="dialog-body">
     <h3>Oyuncu Ekle</h3>
     <input id="playerName" placeholder="Oyuncu adı (Örn: Batuhan)" autofocus>
+    <div class="field" style="margin-top:12px"><label>Başlangıç parası</label><input id="playerStart" inputmode="numeric" oninput="formatManualInput(this)"><div class="helper">15.000 = 15.000.000 ₺ (sonraki oyuncular için hatırlanır)</div></div>
     <div class="dialog-actions">
       <button class="btn outline" onclick="closeDialog('playerDialog')">İptal</button>
       <button class="btn primary" onclick="addPlayer()">Ekle</button>
@@ -832,7 +833,10 @@ function addPlayer(){
   const name=document.getElementById('playerName').value.trim();
   if(!name){toast('Oyuncu adı gir.');return;}
 
-  roomRef('players').push({name,balance:15000000});
+  const sn=parseInt(document.getElementById('playerStart').value.replace(/\D/g,''));
+  const start=(sn>0?sn:15000)*1000;
+  roomRef('players').push({name,balance:start});
+  roomRef('settings/startMoney').set(start);
 
   document.getElementById('playerName').value='';
   closeDialog('playerDialog');
@@ -843,6 +847,7 @@ function openPlayerDialog(){
   if(currentRoomKey===null){toast('Önce bir masaya gir.');return;}
   if(players.length>=6){toast('En fazla 6 oyuncu ekleyebilirsin.');return;}
   document.getElementById('playerName').value='';
+  document.getElementById('playerStart').value=inputFmt((((roomsData[currentRoomKey]||{}).settings||{}).startMoney||15000000)/1000);
   document.getElementById('playerDialog').showModal();
 }
 
@@ -924,7 +929,7 @@ function transferMoney(){
   const updates={};
   updates['players/'+selectedFrom+'/balance']=from.balance-amount;
   updates['players/'+selectedTo+'/balance']=to.balance+amount;
-  updates['transactions/'+txKey]={from:from.name,to:to.name,amount,time:Date.now()};
+  updates['transactions/'+txKey]={from:from.name,to:to.name,fromKey:selectedFrom,toKey:selectedTo,amount,time:Date.now()};
 
   roomRef().update(updates);
   amountValue='';
@@ -938,7 +943,7 @@ function addMoney(key,amount){
   const txKey=roomRef('transactions').push().key;
   const updates={};
   updates['players/'+key+'/balance']=p.balance+amount;
-  updates['transactions/'+txKey]={from:'Banka',to:p.name,amount,time:Date.now()};
+  updates['transactions/'+txKey]={from:'Banka',to:p.name,toKey:key,amount,time:Date.now()};
 
   roomRef().update(updates);
   toast(p.name+' hesabına '+fmt(amount)+' eklendi.',true);
@@ -953,7 +958,7 @@ function removeMoney(key,amount){
   const txKey=roomRef('transactions').push().key;
   const updates={};
   updates['players/'+key+'/balance']=p.balance-amount;
-  updates['transactions/'+txKey]={from:p.name,to:'Banka',amount,time:Date.now()};
+  updates['transactions/'+txKey]={from:p.name,to:'Banka',fromKey:key,amount,time:Date.now()};
 
   roomRef().update(updates);
   toast(p.name+' hesabından '+fmt(amount)+' çıkarıldı.',true);
@@ -992,7 +997,7 @@ function formatAmountInput(el){
 function mp_renderPOS(){
   const total=players.reduce((s,p)=>s+p.balance,0);
 
-  const options=players.map(p=>`<option value="${p.key}">${esc(p.name)} - ${fmt(p.balance)}</option>`).join('');
+  const options=players.filter(p=>!p.out).map(p=>`<option value="${p.key}">${esc(p.name)} - ${fmt(p.balance)}</option>`).join('');
 
   const fromName=selectedFrom&&playersObj[selectedFrom]?playersObj[selectedFrom].name:'';
   const toName=selectedTo&&playersObj[selectedTo]?playersObj[selectedTo].name:'';
@@ -1012,6 +1017,8 @@ function mp_renderPOS(){
       <div class="money">${fmt(total)}</div>
       <div class="players">${players.length}/6 oyuncu</div>
     </div>
+
+    ${mp_toolsHtml()}
 
     <div class="card">
       <div class="section-title">↔️ PARA TRANSFERİ</div>
@@ -1045,13 +1052,14 @@ function mp_renderPOS(){
       ${players.length?`
         <div class="player-grid players-${players.length}">
           ${players.map(p=>`
-            <div class="card player-card" id="playerCard_${p.key}">
+            <div class="card player-card" id="playerCard_${p.key}" ${p.out?'style="opacity:.55"':''}>
               <div class="player-top">
                 <div class="player-info">
                   <div class="player-name-line">
-                    <div class="player-name" style="font-size:18px">${esc(p.name)}</div>
+                    <div class="player-name" style="font-size:18px">${esc(p.name)}${p.out?' 🏳️':''}</div>
                     <div class="player-mini-actions">
                       <button class="mini-btn edit-mini" onclick="editPlayerName('${p.key}')" title="İsmi değiştir">✏️</button>
+                      <button class="mini-btn edit-mini" onclick="toggleOut('${p.key}')" title="${p.out?'Oyuna geri al':'İflas / Elendi'}">${p.out?'↩️':'🏳️'}</button>
                       <button class="mini-btn delete-mini" onclick="removePlayer('${p.key}')" title="Oyuncuyu sil">🗑️</button>
                     </div>
                   </div>
@@ -1085,6 +1093,7 @@ function mp_renderPOS(){
 function mp_renderHistory(){
   document.getElementById('monopolyHistoryPage').innerHTML=`
     <div class="history-title">İşlem Geçmişi</div>
+    ${mp_toolsHtml()}
     <div class="card">
       ${transactions.length?transactions.map(t=>{
         const time=new Date(t.time).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
@@ -1408,6 +1417,7 @@ function okey_renderGame(){
               <button class="btn tonal" onclick="addPenalty(${i})">Ekle</button>
             </div>
             <div class="score-note" style="margin-top:9px">${okeyPenaltiesArray(i).length?okeyPenaltiesArray(i).map(p=>`${p.amount>0?'+':''}${okeyFmt(p.amount)}`).join(' • '):'Henüz ceza yok.'}</div>
+            ${okeyPenaltiesArray(i).length?`<button class="btn outline" style="margin-top:8px;padding:7px 10px;font-size:12px" onclick="okeyUndoPenalty(${i})">↩️ Son cezayı sil</button>`:''}
           </div>`).join('')}
       </div>
     </div>`);
@@ -1422,6 +1432,8 @@ function okey_renderGame(){
         </table>
       </div>
     </div>`);
+
+  el.insertAdjacentHTML('beforeend',okey_toolsHtml());
 }
 
 /* =========================================================
@@ -1598,6 +1610,94 @@ function uno_renderGame(){
       </div>
     </div>`:''}
   `;
+  el.insertAdjacentHTML('beforeend',uno_toolsHtml());
+}
+
+/* =========================================================
+   EK ÖZELLİKLER: geri alma, elenme, paylaşma
+   ========================================================= */
+
+/* Monopoly */
+function mp_toolsHtml(){
+  const active=players.filter(p=>!p.out);
+  const win=players.length>=2&&active.length===1?`<div class="result">🏆 Kazanan: ${esc(active[0].name)}</div>`:'';
+  if(!transactions.length)return win;
+  return `${win}<button class="btn outline full" style="margin-bottom:16px" onclick="mp_undoLast()">↩️ Son işlemi geri al</button>`;
+}
+
+function mp_undoLast(){
+  const t=transactions[0];
+  if(!t){toast('Geri alınacak işlem yok.');return;}
+  const byName=n=>{const m=players.filter(p=>p.name===n);return m.length===1?m[0].key:null;};
+  const fk=t.from==='Banka'?null:(t.fromKey||byName(t.from));
+  const tk=t.to==='Banka'?null:(t.toKey||byName(t.to));
+  const f=fk&&playersObj[fk], r=tk&&playersObj[tk];
+  if((t.from!=='Banka'&&!f)||(t.to!=='Banka'&&!r)){toast('Oyuncu bulunamadığı için geri alınamıyor.');return;}
+  if(r&&r.balance<t.amount){toast(r.name+' bakiyesi yetersiz, geri alınamıyor.');return;}
+  if(!confirm(t.from+' → '+t.to+' ('+fmt(t.amount)+') işlemi geri alınsın mı?'))return;
+  const u={};
+  if(f)u['players/'+fk+'/balance']=f.balance+t.amount;
+  if(r)u['players/'+tk+'/balance']=r.balance-t.amount;
+  u['transactions/'+t.key]=null;
+  roomRef().update(u);
+  toast('İşlem geri alındı.',true);
+}
+
+function toggleOut(key){
+  const p=playersObj[key];
+  if(!p)return;
+  if(!p.out&&!confirm(p.name+' elendi (iflas) olarak işaretlensin mi?'))return;
+  roomRef('players/'+key+'/out').set(p.out?null:true);
+  if(selectedFrom===key)selectedFrom=null;
+  if(selectedTo===key)selectedTo=null;
+  toast(p.out?p.name+' oyuna geri alındı.':p.name+' elendi.',true);
+}
+
+/* 101 Okey */
+function okey_toolsHtml(){
+  if(!okeyRoundsArray().length)return '';
+  return `<button class="btn outline full" style="margin-bottom:16px" onclick="okey_undoRound()">↩️ Son turu geri al</button>`;
+}
+
+function okey_undoRound(){
+  const r=okeyRoundsArray();
+  if(!r.length){toast('Geri alınacak tur yok.');return;}
+  const last=r[r.length-1];
+  if(!confirm('Tur '+r.length+' geri alınsın mı? Puanlar kutulara geri yazılır, düzeltip tekrar kaydedebilirsin.'))return;
+  const u={};
+  u['okey/rounds/'+last.key]=null;
+  okeySides().forEach((_,i)=>{u['okey/currentScores/'+i]=String(last.scores[i]??'');});
+  u['okey/finished']=false;
+  roomRef().update(u);
+  toast('Son tur geri alındı.',true);
+}
+
+function okeyUndoPenalty(i){
+  const a=okeyPenaltiesArray(i);
+  if(!a.length)return;
+  const l=a[a.length-1];
+  if(!confirm(okeySides()[i].name+' için son ceza ('+l.amount+') silinsin mi?'))return;
+  roomRef('okey/penalties/'+i+'/'+l.key).remove();
+  toast('Ceza silindi.',true);
+}
+
+/* UNO */
+function uno_toolsHtml(){
+  if(!unoRoundsArray().length)return '';
+  return `<button class="btn outline full" style="margin-bottom:16px" onclick="uno_undoRound()">↩️ Son turu geri al</button>`;
+}
+
+function uno_undoRound(){
+  const r=unoRoundsArray();
+  if(!r.length){toast('Geri alınacak tur yok.');return;}
+  const last=r[r.length-1];
+  if(!confirm(r.length+'. tur geri alınsın mı? Puanlar kutulara geri yazılır, düzeltip tekrar kaydedebilirsin.'))return;
+  const u={};
+  u['uno/rounds/'+last.key]=null;
+  unoPlayers().forEach((_,i)=>{u['uno/currentScores/'+i]=String((last.scores&&last.scores[i])??'');});
+  u['uno/finished']=false;
+  roomRef().update(u);
+  toast('Son tur geri alındı.',true);
 }
 
 /* =========================================================
