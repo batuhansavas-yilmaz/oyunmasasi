@@ -1338,8 +1338,7 @@ function okey_renderGameBase(){
     </div>
     ${result}
     <div class="card">
-      <h2 class="section-title">${isFinal?'Nihai Puanlar':`Tur ${current} Puanları`}</h2>
-      ${!isFinal?'<p class="info">Puan Giriniz.</p>':''}
+      <h2 class="section-title">${isFinal?'Nihai Puanlar':`${current}. Tur Puanları`}</h2>
       <div class="score-grid">
         ${sides.map((side,i)=>{
           const lead=(isFinal?finalInfo:info).leaders.includes(i);
