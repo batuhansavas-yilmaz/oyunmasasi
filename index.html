@@ -1339,7 +1339,7 @@ function okey_renderGameBase(){
     ${result}
     <div class="card">
       <h2 class="section-title">${isFinal?'Nihai Puanlar':`Tur ${current} Puanları`}</h2>
-      ${!isFinal?'<p class="info">Puanlar yalnızca bu tur içindir. <b>−100</b> hızlı butonu, seçilen tarafa bu tur için −100 puan yazar.</p>':''}
+      ${!isFinal?'<p class="info">Puan Giriniz.</p>':''}
       <div class="score-grid">
         ${sides.map((side,i)=>{
           const lead=(isFinal?finalInfo:info).leaders.includes(i);
@@ -1406,7 +1406,6 @@ function okey_renderGame(){
   el.insertAdjacentHTML('beforeend',`
     <div class="card">
       <h2 class="section-title">⚠️ Ceza Tablosu</h2>
-      <p class="info">Her kişi veya takım için sınırsız ceza girebilirsiniz. Ceza puanı genel toplama eklenir.</p>
       <div class="score-grid">
         ${sides.map((side,i)=>`
           <div class="score-card">
@@ -1424,7 +1423,7 @@ function okey_renderGame(){
 
   if(roundsArr.length)el.insertAdjacentHTML('beforeend',`
     <div class="card">
-      <h2 class="section-title">🧾 Önceki Turlar</h2>
+      <h2 class="section-title">🧾 Turlar</h2>
       <div style="overflow-x:auto">
         <table class="uno-table">
           <thead><tr><th></th>${sides.map(side=>`<th>${esc(side.name)}</th>`).join('')}</tr></thead>
