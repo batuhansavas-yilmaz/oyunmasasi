@@ -359,7 +359,27 @@ dialog::backdrop{background:#0006}
     </div>
   </div>
 </dialog>
-
+<!-- EK TUR -->
+<dialog id="extraRoundDialog">
+  <div class="dialog-body">
+    <h3>➕ Ek Tur Ekle</h3>
+    <div class="field">
+      <label>Kaç tur eklensin?</label>
+      <select id="extraRoundCount">
+        <option value="1">1 tur</option>
+        <option value="2">2 tur</option>
+        <option value="3">3 tur</option>
+        <option value="4">4 tur</option>
+        <option value="5">5 tur</option>
+      </select>
+      <div class="helper">1 tur eklenirse son turda puanlar gösterilir. 2 veya daha fazla eklenirse puanlar yeni son tura kadar gizli kalır.</div>
+    </div>
+    <div class="dialog-actions">
+      <button class="btn outline" onclick="closeDialog('extraRoundDialog')">İptal</button>
+      <button class="btn primary" onclick="okey_addExtraRounds()">Ekle</button>
+    </div>
+  </div>
+</dialog>
 <!-- OYUNCU EKLE (Monopoly) -->
 <dialog id="playerDialog">
   <div class="dialog-body">
@@ -1352,13 +1372,14 @@ function okey_renderGameBase(){
               ${!isFinal?`
                 <div class="entry-label">Bu tur puanı</div>
                 <div class="score-entry">
-                  <input class="okey-score-input" data-side="${i}" type="number" inputmode="decimal" value="${esc(currentScore)}" placeholder="0" onchange="setScore(${i},this.value)">
+                  <input class="okey-score-input" data-side="${i}" type="number" value="${esc(currentScore)}" placeholder="0" onchange="setScore(${i},this.value)">
                   <button class="btn hundred" onclick="quickMinus100(${i})">−100</button>
                 </div>`:''}
             </div>`;
         }).join('')}
       </div>
       ${!isFinal?`<button class="btn primary full" style="margin-top:18px" onclick="commitRound()">${isLast?'SON TURU BİTİR VE KAZANANI GÖSTER':'TURU KAYDET'}</button>`:''}
+    ${(isLast||isFinal)?`<button class="btn outline full" style="margin-top:10px" onclick="okey_openExtraRound()">➕ EK TUR EKLE</button>`:''}
     </div>
   `;
 }
@@ -1404,18 +1425,18 @@ function okey_renderGame(){
 
   el.insertAdjacentHTML('beforeend',`
     <div class="card">
-      <h2 class="section-title">⚠️ Ceza Tablosu</h2>
+      <h2 class="section-title">⚠️ Ceza / Siler Tablosu</h2>
       <div class="score-grid">
         ${sides.map((side,i)=>`
           <div class="score-card">
             <div class="score-name">${esc(side.name)}</div>
             <div class="score-note">Toplam ceza: ${okeyFmt(okeyPenaltyTotal(i))}</div>
             <div class="score-entry">
-              <input id="penalty_${i}" type="number" inputmode="numeric" placeholder="Ceza puanı">
+              <input id="penalty_${i}" type="number"placeholder="Ceza / siler puanı">
               <button class="btn tonal" onclick="addPenalty(${i})">Ekle</button>
             </div>
-            <div class="score-note" style="margin-top:9px">${okeyPenaltiesArray(i).length?okeyPenaltiesArray(i).map(p=>`${p.amount>0?'+':''}${okeyFmt(p.amount)}`).join(' • '):'Henüz ceza yok.'}</div>
-            ${okeyPenaltiesArray(i).length?`<button class="btn outline" style="margin-top:8px;padding:7px 10px;font-size:12px" onclick="okeyUndoPenalty(${i})">↩️ Son cezayı sil</button>`:''}
+            <div class="score-note" style="margin-top:9px">${okeyPenaltiesArray(i).length?okeyPenaltiesArray(i).map(p=>`${p.amount>0?'+':''}${okeyFmt(p.amount)}`).join(' • '):'Henüz ceza / siler yok.'}</div>
+            ${okeyPenaltiesArray(i).length?`<button class="btn outline" style="margin-top:8px;padding:7px 10px;font-size:12px" onclick="okeyUndoPenalty(${i})">↩️ Son cezayı / sileri sil</button>`:''}
           </div>`).join('')}
       </div>
     </div>`);
@@ -1585,7 +1606,7 @@ function uno_renderGame(){
             ${!done?`
               <div class="entry-label">Bu tur puanı</div>
               <div class="score-entry">
-                <input class="uno-score-input" data-side="${i}" type="number" inputmode="decimal" value="${esc(unoCurrentScore(i))}" placeholder="0" onchange="unoSetScore(${i},this.value)">
+                <input class="uno-score-input" data-side="${i}" type="number" value="${esc(unoCurrentScore(i))}" placeholder="0" onchange="unoSetScore(${i},this.value)">
               </div>`:''}
           </div>`).join('')}
       </div>
@@ -1652,6 +1673,21 @@ function toggleOut(key){
 }
 
 /* 101 Okey */
+function okey_openExtraRound(){
+  document.getElementById('extraRoundCount').value='1';
+  document.getElementById('extraRoundDialog').showModal();
+}
+
+function okey_addExtraRounds(){
+  if(!okeyData||!okeyData.config)return;
+  const n=parseInt(document.getElementById('extraRoundCount').value)||1;
+  const u={};
+  u['okey/config/roundCount']=okeyData.config.roundCount+n;
+  u['okey/finished']=false;
+  roomRef().update(u);
+  closeDialog('extraRoundDialog');
+  toast(n+' ek tur eklendi.',true);
+}
 function okey_toolsHtml(){
   if(!okeyRoundsArray().length)return '';
   return `<button class="btn outline full" style="margin-bottom:16px" onclick="okey_undoRound()">↩️ Son turu geri al</button>`;
@@ -1674,7 +1710,7 @@ function okeyUndoPenalty(i){
   const a=okeyPenaltiesArray(i);
   if(!a.length)return;
   const l=a[a.length-1];
-  if(!confirm(okeySides()[i].name+' için son ceza ('+l.amount+') silinsin mi?'))return;
+  if(!confirm(okeySides()[i].name+' için son ceza / siler ('+l.amount+') silinsin mi?'))return;
   roomRef('okey/penalties/'+i+'/'+l.key).remove();
   toast('Ceza silindi.',true);
 }
