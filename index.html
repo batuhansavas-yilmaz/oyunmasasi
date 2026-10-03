@@ -1738,10 +1738,15 @@ function uno_undoRound(){
    KLAVYE
    ========================================================= */
 
-document.getElementById('playerName').addEventListener('keydown',e=>{if(e.key==='Enter')addPlayer();});
-document.getElementById('roomName').addEventListener('keydown',e=>{if(e.key==='Enter')createRoom();});
-document.getElementById('roomPasswordInput').addEventListener('keydown',e=>{if(e.key==='Enter')submitRoomPassword();});
-
+document.getElementById('playerName').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addPlayer();}});
+document.getElementById('roomName').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();createRoom();}});
+document.getElementById('roomPasswordInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    e.preventDefault();
+    e.stopPropagation();
+    submitRoomPassword();
+  }
+});
 render();
 </script>
 
