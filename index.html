@@ -1447,7 +1447,7 @@ function okey_renderGame(){
       <div style="overflow-x:auto">
         <table class="uno-table">
           <thead><tr><th></th>${sides.map(side=>`<th>${esc(side.name)}</th>`).join('')}</tr></thead>
-          <tbody>${roundsArr.map((round,index)=>`<tr><td>Tur ${index+1}</td>${sides.map((side,i)=>`<td class="${round.scores[i]<0?'negative':''}">${okeyFmt(round.scores[i])}</td>`).join('')}</tr>`).join('')}${showPreFinal?`<tr class="tot"><td>Toplam</td>${okeyTotals(false).map((t,i)=>{const pen=okeyPenaltyTotal(i);return `<td>${okeyFmt(t)}${pen?`<br><small>(${pen>0?'+':''}${okeyFmt(pen)} ceza)</small>`:''}</td>`;}).join('')}</tr>`:''}</tbody>
+          <tbody>${roundsArr.map((round,index)=>`<tr><td>Tur ${index+1}</td>${sides.map((side,i)=>`<td class="${round.scores[i]<0?'negative':''}">${okeyFmt(round.scores[i])}</td>`).join('')}</tr>`).join('')}${showPreFinal?`<tr class="tot"><td>Toplam</td>${okeyTotals(false).map((t,i)=>{const pen=okeyPenaltyTotal(i);return `<td>${okeyFmt(t)}${pen?`<br><small>(${pen>0?'+':''}${okeyFmt(pen)} ceza / siler)</small>`:''}</td>`;}).join('')}</tr>`:''}</tbody>
         </table>
       </div>
     </div>`);
