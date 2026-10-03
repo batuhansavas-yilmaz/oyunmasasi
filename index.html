@@ -1432,7 +1432,7 @@ function okey_renderGame(){
             <div class="score-name">${esc(side.name)}</div>
             <div class="score-note">Toplam ceza: ${okeyFmt(okeyPenaltyTotal(i))}</div>
             <div class="score-entry">
-              <input id="penalty_${i}" type="number"placeholder="Ceza / siler puanı">
+              <input id="penalty_${i}" type="number"placeholder="Sayı Giriniz.">
               <button class="btn tonal" onclick="addPenalty(${i})">Ekle</button>
             </div>
             <div class="score-note" style="margin-top:9px">${okeyPenaltiesArray(i).length?okeyPenaltiesArray(i).map(p=>`${p.amount>0?'+':''}${okeyFmt(p.amount)}`).join(' • '):'Henüz ceza / siler yok.'}</div>
