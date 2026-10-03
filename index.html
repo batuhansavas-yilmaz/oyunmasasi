@@ -1172,14 +1172,27 @@ function okeyCurrentScore(i){
   const v=cs[i];
   return v===undefined||v===null?'':v;
 }
+function okeyEntryCount(){return okeyIsTeamGame()?4:okeySides().length;}
+function okeySideEntries(i){return okeyIsTeamGame()?[2*i,2*i+1]:[i];}
+function okeyEntryName(e){
+  if(okeyIsTeamGame())return okeySides()[Math.floor(e/2)].members[e%2];
+  return okeySides()[e].name;
+}
 
+function okeyCurrentBonus(i){
+  const b=(okeyData&&okeyData.currentBonus)||{};
+  return Number(b[i])||0;
+}
+function okeySideCurrent(i){
+  return okeySideEntries(i).reduce((s,e)=>s+(Number(okeyCurrentScore(e))||0),0)+(okeyIsTeamGame()?okeyCurrentBonus(i):0);
+}
 function okeyTotals(includeCurrent=false){
   const sides=okeySides();
   const rounds=okeyRoundsArray();
   return sides.map((_,i)=>
     rounds.reduce((s,r)=>s+(r.scores[i]||0),0)
     + okeyPenaltyTotal(i)
-    + (includeCurrent?(Number(okeyCurrentScore(i))||0):0)
+    + (includeCurrent?okeySideCurrent(i):0)
   );
 }
 
@@ -1259,7 +1272,7 @@ function okey_createGame(){
 
   roomRef('okey').set({
     config:{roundCount:+document.getElementById('okeyRoundCount').value,sides},
-    currentScores:sides.map(()=>''),
+    currentScores:names.map(()=>''),
     rounds:{},
     penalties:{},
     finished:false
@@ -1291,9 +1304,17 @@ function quickMinus100(i){
   const el=okeyScoreInput(i);
   if(el)el.value=next;
   roomRef('okey/currentScores/'+i).set(next);
+  toast(okeyEntryName(i)+': -100 uygulandı.');
+}
+function teamMinus100(i){
+  roomRef('okey/currentBonus/'+i).set(okeyCurrentBonus(i)-100);
   toast(okeySides()[i].name+': -100 uygulandı.');
 }
 
+function teamBonusReset(i){
+  roomRef('okey/currentBonus/'+i).set(0);
+  toast(okeySides()[i].name+': takım -100 sıfırlandı.');
+}
 function addPenalty(i){
   const input=document.getElementById('penalty_'+i);
   const amount=Number(input.value);
@@ -1302,22 +1323,31 @@ function addPenalty(i){
   roomRef('okey/penalties/'+i).push({amount,time:Date.now()});
   toast(okeySides()[i].name+' için ceza kaydedildi.',true);
 }
-
 function commitRound(){
-  const sides=okeySides();
-  const scores=[];
+  const team=okeyIsTeamGame();
+  const n=okeyEntryCount();
+  const entries=[];
 
-  for(let i=0;i<sides.length;i++){
-    const v=okeyScoreFromDom(i);
-    if(v===''){scores.push(0);continue;}
+  for(let e=0;e<n;e++){
+    const v=okeyScoreFromDom(e);
+    if(v===''){entries.push(0);continue;}
     if(!Number.isFinite(Number(v))){toast('Geçerli bir puan girin.');return;}
-    scores.push(Number(v));
+    entries.push(Number(v));
+  }
+
+  const bonus=team?[okeyCurrentBonus(0),okeyCurrentBonus(1)]:null;
+  const scores=team?[entries[0]+entries[1]+bonus[0],entries[2]+entries[3]+bonus[1]]:entries;
+  const roundData={scores,time:Date.now()};
+  if(team){
+    roundData.playerScores=entries;
+    roundData.teamBonus=bonus;
   }
 
   const roundKey=roomRef('okey/rounds').push().key;
   const updates={};
-  updates['okey/rounds/'+roundKey]={scores,time:Date.now()};
-  sides.forEach((_,i)=>{updates['okey/currentScores/'+i]='';});
+  updates['okey/rounds/'+roundKey]=roundData;
+  for(let e=0;e<n;e++){updates['okey/currentScores/'+e]='';}
+  if(team){updates['okey/currentBonus/0']=0;updates['okey/currentBonus/1']=0;}
 
   const newCount=okeyRoundsArray().length+1;
   if(newCount>=okeyData.config.roundCount)updates['okey/finished']=true;
@@ -1325,7 +1355,6 @@ function commitRound(){
   roomRef().update(updates);
   toast(newCount>=okeyData.config.roundCount?'Oyun tamamlandı. Kazanan açıklandı.':(newCount+'. tur kaydedildi.'),true);
 }
-
 function okey_renderGameBase(){
   const el=document.getElementById('okeyGamePage');
   const sides=okeySides();
@@ -1360,23 +1389,34 @@ function okey_renderGameBase(){
     <div class="card">
       <h2 class="section-title">${isFinal?'Nihai Puanlar':`${current}. Tur Puanları`}</h2>
       <div class="score-grid">
-        ${sides.map((side,i)=>{
-          const lead=(isFinal?finalInfo:info).leaders.includes(i);
-          const currentScore=okeyCurrentScore(i);
-          return `
-            <div class="score-card ${lead&&displayTotals.some(x=>x!==displayTotals[i])?'leading':''}">
-              <div class="score-name">${esc(side.name)}</div>
-              <div class="score-note">${side.members.length>1?esc(side.members.join(' + ')):''}</div>
-              <div class="score-total">${okeyFmt(displayTotals[i])}</div>
-              <div class="score-note">${isFinal?'toplam puan':(roundsArr.length?`Önceki turlar: ${okeyFmt(info.totals[i])}`:'Başlangıç puanı: 0')}</div>
-              ${!isFinal?`
-                <div class="entry-label">Bu tur puanı</div>
-                <div class="score-entry">
-                  <input class="okey-score-input" data-side="${i}" type="number" value="${esc(currentScore)}" placeholder="0" onchange="setScore(${i},this.value)">
-                  <button class="btn hundred" onclick="quickMinus100(${i})">−100</button>
-                </div>`:''}
-            </div>`;
-        }).join('')}
+       ${sides.map((side,i)=>{
+  const lead=(isFinal?finalInfo:info).leaders.includes(i);
+  const team=okeyIsTeamGame();
+  return `
+    <div class="score-card ${lead&&displayTotals.some(x=>x!==displayTotals[i])?'leading':''}">
+      <div class="score-name">${esc(side.name)}</div>
+      <div class="score-note">${side.members.length>1?esc(side.members.join(' + ')):''}</div>
+      <div class="score-total">${okeyFmt(displayTotals[i])}</div>
+      <div class="score-note">${isFinal?'toplam puan':(roundsArr.length?`Önceki turlar: ${okeyFmt(info.totals[i])}`:'Başlangıç puanı: 0')}</div>
+          ${!isFinal?(team?`
+      ${okeySideEntries(i).map(e=>`
+        <div class="entry-label">${esc(okeyEntryName(e))} puanı</div>
+        <div class="score-entry">
+          <input class="okey-score-input" data-side="${e}" type="number" value="${esc(okeyCurrentScore(e))}" placeholder="0" onchange="setScore(${e},this.value)">
+        </div>`).join('')}
+      <div class="entry-label">Siler: <b class="${okeyCurrentBonus(i)<0?'negative':''}">${okeyFmt(okeyCurrentBonus(i))}</b></div>
+      <div class="score-entry">
+        <button class="btn hundred" style="flex:1;height:42px" onclick="teamMinus100(${i})">−100 Siler</button>
+        ${okeyCurrentBonus(i)?`<button class="btn outline" style="padding:0 12px" onclick="teamBonusReset(${i})" title="Sıfırla">↩️</button>`:''}
+      </div>`
+    :`
+      <div class="entry-label">Bu tur puanı</div>
+      <div class="score-entry">
+        <input class="okey-score-input" data-side="${i}" type="number" value="${esc(okeyCurrentScore(i))}" placeholder="0" onchange="setScore(${i},this.value)">
+        <button class="btn hundred" onclick="quickMinus100(${i})">−100</button>
+      </div>`):''}
+    </div>`;
+}).join('')}
       </div>
       ${!isFinal?`<button class="btn primary full" style="margin-top:18px" onclick="commitRound()">${isLast?'SON TURU BİTİR VE KAZANANI GÖSTER':'TURU KAYDET'}</button>`:''}
     ${(isLast||isFinal)?`<button class="btn outline full" style="margin-top:10px" onclick="okey_openExtraRound()">➕ EK TUR EKLE</button>`:''}
@@ -1436,7 +1476,7 @@ function okey_renderGame(){
               <button class="btn tonal" onclick="addPenalty(${i})">Ekle</button>
             </div>
             <div class="score-note" style="margin-top:9px">${okeyPenaltiesArray(i).length?okeyPenaltiesArray(i).map(p=>`${p.amount>0?'+':''}${okeyFmt(p.amount)}`).join(' • '):'Henüz ceza / siler yok.'}</div>
-            ${okeyPenaltiesArray(i).length?`<button class="btn outline" style="margin-top:8px;padding:7px 10px;font-size:12px" onclick="okeyUndoPenalty(${i})">↩️ Son cezayı / sileri sil</button>`:''}
+            ${okeyPenaltiesArray(i).length?`<button class="btn outline" style="margin-top:8px;padding:7px 10px;font-size:12px" onclick="okeyUndoPenalty(${i})">↩️ Geri al</button>`:''}
           </div>`).join('')}
       </div>
     </div>`);
@@ -1700,7 +1740,20 @@ function okey_undoRound(){
   if(!confirm('Tur '+r.length+' geri alınsın mı? Puanlar kutulara geri yazılır, düzeltip tekrar kaydedebilirsin.'))return;
   const u={};
   u['okey/rounds/'+last.key]=null;
-  okeySides().forEach((_,i)=>{u['okey/currentScores/'+i]=String(last.scores[i]??'');});
+  const n=okeyEntryCount();
+for(let e=0;e<n;e++){
+  let v='';
+  if(okeyIsTeamGame()){
+    if(last.playerScores)v=last.playerScores[e];
+    else if(e%2===0)v=last.scores[e/2];   // eski kayıt: takım puanını ilk oyuncuya yaz
+  }else{
+    v=last.scores[e];
+  }
+  u['okey/currentScores/'+e]=String(v??'');
+}
+if(okeyIsTeamGame()){
+  [0,1].forEach(i=>{u['okey/currentBonus/'+i]=(last.teamBonus&&last.teamBonus[i])||0;});
+}
   u['okey/finished']=false;
   roomRef().update(u);
   toast('Son tur geri alındı.',true);
@@ -1747,6 +1800,7 @@ document.getElementById('roomPasswordInput').addEventListener('keydown',e=>{
     submitRoomPassword();
   }
 });
+
 render();
 </script>
 
