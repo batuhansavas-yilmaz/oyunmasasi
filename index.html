@@ -407,7 +407,7 @@ dialog::backdrop{background:rgba(5,8,18,.7);-webkit-backdrop-filter:blur(4px);ba
   .room-list{grid-template-columns:1fr}
 }
 @media(max-width:720px){
-  .game-cards{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px 28px;padding:0 16px 4px;scrollbar-width:none}
+  .game-cards{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px 28px;padding:0 16px 4px 24px;scroll-padding-left:24px;scrollbar-width:none}
   .game-cards::-webkit-scrollbar{display:none}
   .game-card{flex:0 0 78%;scroll-snap-align:start;min-height:190px}
   .lobby-hero{padding:28px 22px;min-height:0;background:linear-gradient(180deg,rgba(13,17,34,.55) 0%,rgba(13,17,34,.92) 55%,rgba(13,17,34,.98) 100%),url(img/hero.webp) center top/cover no-repeat,var(--surface)}
@@ -424,7 +424,7 @@ dialog::backdrop{background:rgba(5,8,18,.7);-webkit-backdrop-filter:blur(4px);ba
   .appbar .status{height:32px;padding:0 10px;font-size:11px}
   .add-player-btn{height:34px;padding:0 10px;font-size:12px}
   .iconbtn{width:34px;height:34px;border-radius:10px}
-  .game-cards{margin:0 -12px 24px;padding:0 12px 4px}
+  .game-cards{margin:0 -12px 24px;padding:0 12px 4px 20px;scroll-padding-left:20px}
   .lobby-hero{border-radius:20px;padding:24px 18px}
   .lobby-hero h2{font-size:27px}
   .player-card{padding:14px}
@@ -589,6 +589,7 @@ dialog::backdrop{background:rgba(5,8,18,.7);-webkit-backdrop-filter:blur(4px);ba
   <div class="dialog-body">
     <h3 id="roomPasswordTitle">Şifre gerekli</h3>
     <input id="roomPasswordInput" type="password" placeholder="Şifreyi gir">
+    <div id="roomPasswordError" class="helper error" style="display:none"></div>
     <div class="dialog-actions">
       <button class="btn outline" onclick="closeDialog('roomPasswordDialog')">İptal</button>
       <button class="btn primary" onclick="submitRoomPassword()">Gir</button>
@@ -886,6 +887,16 @@ function createRoom(){
   doEnterRoom(newRef.key);
 }
 
+function openRoomPassword(){
+  const input=document.getElementById('roomPasswordInput');
+  const err=document.getElementById('roomPasswordError');
+  input.value='';
+  err.textContent='';
+  err.style.display='none';
+  document.getElementById('roomPasswordDialog').showModal();
+  input.focus();
+}
+
 function enterRoom(key){
   const room=roomsData[key];
   if(!room)return;
@@ -894,8 +905,7 @@ function enterRoom(key){
     pendingRoomKey=key;
     pendingRoomAction='enter';
     document.getElementById('roomPasswordTitle').textContent=(room.meta.name||'Masa')+' - Şifre Gerekli';
-    document.getElementById('roomPasswordInput').value='';
-    document.getElementById('roomPasswordDialog').showModal();
+    openRoomPassword();
   }else{
     doEnterRoom(key);
   }
@@ -908,7 +918,12 @@ function submitRoomPassword(){
   const val=document.getElementById('roomPasswordInput').value;
 
   if(room.meta.password && val!==room.meta.password){
-    toast('Şifre yanlış.');
+    const err=document.getElementById('roomPasswordError');
+    err.textContent='Şifre yanlış. Tekrar dene.';
+    err.style.display='';
+    const input=document.getElementById('roomPasswordInput');
+    input.focus();
+    input.select();
     return;
   }
 
@@ -943,8 +958,7 @@ function deleteRoom(key){
     pendingRoomKey=key;
     pendingRoomAction='delete';
     document.getElementById('roomPasswordTitle').textContent=(room.meta.name||'Masa')+' - Silmek için şifre gir';
-    document.getElementById('roomPasswordInput').value='';
-    document.getElementById('roomPasswordDialog').showModal();
+    openRoomPassword();
     return;
   }
 
@@ -2117,6 +2131,10 @@ function uno_undoRound(){
 
 document.getElementById('playerName').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addPlayer();}});
 document.getElementById('roomName').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();createRoom();}});
+document.getElementById('roomPasswordInput').addEventListener('input',()=>{
+  const err=document.getElementById('roomPasswordError');
+  if(err)err.style.display='none';
+});
 document.getElementById('roomPasswordInput').addEventListener('keydown',e=>{
   if(e.key==='Enter'){
     e.preventDefault();
