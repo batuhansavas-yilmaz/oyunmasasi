@@ -3,181 +3,383 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#4527A0">
+<meta name="theme-color" content="#0c1120">
 <title>Oyun Masası</title>
 <link rel="icon" type="image/png" href="data:image/png;base64,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">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Oyun Masası">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* =========================================================
+   TASARIM SİSTEMİ
+   ========================================================= */
+:root{
+  color-scheme:dark;
+  --bg:#0c1120;
+  --surface:#161d31;
+  --surface-2:#1d253d;
+  --surface-3:#253050;
+  --border:#263051;
+  --border-2:#323d63;
+  --text:#eef1f8;
+  --text-2:#a2abc8;
+  --text-3:#6a7495;
+  --primary:#6f63f6;
+  --primary-2:#8b80ff;
+  --primary-soft:rgba(111,99,246,.16);
+  --cta:#ff8b1f;
+  --cta-2:#f86a12;
+  --gold:#ffc53d;
+  --green:#2fd27f;
+  --green-soft:rgba(47,210,127,.13);
+  --red:#ff5b6b;
+  --red-soft:rgba(255,91,107,.12);
+  --r-sm:10px;
+  --r:14px;
+  --r-lg:20px;
+  --shadow:0 12px 32px rgba(2,5,18,.35);
+  --font:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --game-img:url(img/hero.webp);
+}
+body[data-game="monopoly"]{--game-img:url(img/monopoly.webp)}
+body[data-game="okey"]{--game-img:url(img/okey.webp)}
+body[data-game="uno"]{--game-img:url(img/uno.webp)}
+
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f5f5f7;color:#202124}
-button,input,select{font:inherit}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;font-family:var(--font);font-size:15px;line-height:1.45;color:var(--text);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;
+  background:radial-gradient(1200px 600px at 85% -10%,rgba(91,80,240,.18),transparent 60%),radial-gradient(900px 500px at -10% 110%,rgba(56,120,255,.10),transparent 60%),var(--bg);background-attachment:fixed}
+button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--primary-2);outline-offset:2px}
+img{display:block;max-width:100%}
 
-.appbar{height:64px;background:#fff;display:flex;align-items:center;padding:0 18px;position:sticky;top:0;z-index:5;box-shadow:0 2px 6px rgba(0,0,0,0.14),0 5px 14px rgba(0,0,0,0.08)}
-.appbar h1{font-size:19px;margin:0 0 0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.appbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
-.appbar .status{font-size:12px;color:#777;display:flex;align-items:center;gap:6px}
-.appbar .dot{width:9px;height:9px;border-radius:50%;background:#ccc}
-.appbar .dot.on{background:#2e7d32}
-.appbar .iconbtn{border:0;background:transparent;font-size:22px;padding:4px 6px}
-.appbar .add-player-btn{border:0;background:#4527a0;color:#fff;border-radius:10px;padding:9px 12px;font-weight:bold;font-size:13px}
+.ic{width:18px;height:18px;flex-shrink:0;vertical-align:middle}
+.ic-gold{color:var(--gold)}
+.ic-sm{width:15px;height:15px}
 
-main{max-width:650px;margin:auto;padding:16px 16px 90px}
+/* =========================================================
+   ÜST BAR
+   ========================================================= */
+.appbar{height:64px;display:flex;align-items:center;gap:10px;padding:0 20px;position:sticky;top:0;z-index:5;background:rgba(12,17,32,.85);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.brand-mark{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary-2),var(--primary));color:#fff;box-shadow:0 6px 16px rgba(111,99,246,.4);flex-shrink:0}
+.brand-mark .ic{width:20px;height:20px}
+.appbar h1{font-size:17px;font-weight:800;letter-spacing:-.01em;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.appbar h1 .accent{color:var(--cta)}
+.appbar-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.appbar .status{font-size:12px;font-weight:600;color:var(--text-2);display:flex;align-items:center;gap:7px;height:36px;padding:0 12px;border:1px solid var(--border);border-radius:99px;background:var(--surface);white-space:nowrap}
+.appbar .dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+.appbar .dot.on{background:var(--green);box-shadow:0 0 0 3px var(--green-soft)}
+.iconbtn{border:1px solid var(--border);background:var(--surface);color:var(--text);width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;padding:0;flex-shrink:0;transition:background .15s,border-color .15s}
+.iconbtn:hover{background:var(--surface-2);border-color:var(--border-2)}
+.add-player-btn{display:inline-flex;align-items:center;gap:6px;height:38px;border:0;background:var(--primary);color:#fff;border-radius:11px;padding:0 14px;font-weight:700;font-size:13px;transition:background .15s}
+.add-player-btn:hover:not(:disabled){background:var(--primary-2)}
 
-.card{background:#fff;border-radius:18px;margin-bottom:16px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,0.14),0 5px 14px rgba(0,0,0,0.08)}
+/* =========================================================
+   YERLEŞİM
+   ========================================================= */
+.shell{display:block}
+.sidebar{display:none}
+main{max-width:1040px;margin:0 auto;padding:20px 16px 100px;min-width:0}
+#monopolyPosPage,#monopolyHistoryPage,#okeySetupPage,#okeyGamePage,#unoSetupPage,#unoGamePage{max-width:760px;margin:0 auto}
+.page{display:none}
+.page.active{display:block;animation:fadeIn .25s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}}
 
-.total{color:#fff;text-align:center;padding:24px;background:linear-gradient(135deg,#4527a0,#7e57c2);border-radius:20px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,0.14),0 5px 14px rgba(0,0,0,0.08)}
-.total .icon{font-size:42px}
-.total .label{font-size:13px;color:#ffffffbb;font-weight:bold;margin:10px}
-.total .money{font-size:30px;font-weight:bold}
-.total .players{color:#ffffffbb;margin-top:5px}
+@media(min-width:1100px){
+  .shell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:calc(100vh - 64px)}
+  .sidebar{display:flex;flex-direction:column;gap:6px;position:sticky;top:64px;height:calc(100vh - 64px);padding:20px 14px;border-right:1px solid var(--border);background:rgba(18,24,42,.6);overflow-y:auto}
+  main{padding:24px 28px 100px;width:100%}
+  .room-chips{display:none !important}
+  .nav{left:248px}
+  .toast{margin-left:124px}
+}
+.side-label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--text-2);padding:6px 10px 8px;margin-top:6px}
+.side-item{display:flex;align-items:center;gap:12px;width:100%;padding:8px 10px;border:1px solid transparent;border-radius:12px;background:transparent;color:var(--text-2);font-weight:600;font-size:14px;text-align:left;transition:background .15s,color .15s}
+.side-item:hover{background:var(--surface);color:var(--text)}
+.side-item.active{background:var(--surface-2);border-color:var(--border-2);color:var(--text)}
+.side-item img,.side-item .side-ico{width:38px;height:38px;border-radius:10px;object-fit:cover;flex-shrink:0}
+.side-item .side-ico{display:flex;align-items:center;justify-content:center;background:var(--surface-3);color:var(--text-2)}
+.side-item .count{margin-left:auto;font-size:12px;color:var(--text-3);font-variant-numeric:tabular-nums}
+.side-new{margin-top:14px;justify-content:center}
+.side-foot{margin-top:auto;padding:12px 10px 0;font-size:11px;color:var(--text-3);line-height:1.5}
 
-.hero{color:#fff;text-align:center;padding:22px;background:linear-gradient(135deg,#4527a0,#7e57c2);border-radius:20px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,0.14),0 5px 14px rgba(0,0,0,0.08)}
-.hero .round{font-size:13px;color:#ffffffbb;font-weight:bold}
-.hero .big{font-size:27px;font-weight:bold;margin:7px 0}
-.hero .sub{font-size:13px;color:#ffffffcc}
-.progress{display:flex;gap:4px;justify-content:center;margin-top:14px}
-.progress span{height:5px;flex:1;max-width:22px;background:#ffffff55;border-radius:99px}
-.progress .done,.progress .now{background:#fff}
-.progress .now{box-shadow:0 0 0 2px #ffffff66}
+/* =========================================================
+   KARTLAR
+   ========================================================= */
+.card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:16px;padding:20px;box-shadow:var(--shadow)}
+.card.glow{border-color:rgba(255,197,61,.35);background:linear-gradient(180deg,rgba(255,197,61,.06),transparent 40%),var(--surface)}
 
-.section-title{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:bold;margin-bottom:20px}
-.setup-title{font-size:19px;font-weight:bold;margin:0 0 18px}
+/* Oyun içi başlık bandı (görselli) */
+.total,.hero{position:relative;overflow:hidden;border-radius:var(--r-lg);margin-bottom:16px;padding:26px 24px;min-height:168px;display:flex;flex-direction:column;justify-content:center;
+  background:linear-gradient(90deg,rgba(14,19,36,.96) 0%,rgba(14,19,36,.82) 45%,rgba(14,19,36,.25) 100%),var(--game-img) center/cover no-repeat,var(--surface);
+  border:1px solid var(--border);box-shadow:var(--shadow)}
+.total .icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,197,61,.16);color:var(--gold);margin-bottom:12px}
+.total .icon .ic{width:22px;height:22px}
+.total .label{font-size:13px;font-weight:600;color:var(--text-2)}
+.total .money{font-size:34px;font-weight:800;letter-spacing:-.02em;margin:2px 0 10px;font-variant-numeric:tabular-nums}
+.total .players,.hero .sub{display:inline-flex;align-self:flex-start;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);padding:5px 10px;border-radius:99px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.hero .round{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--gold)}
+.hero .big{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:4px 0 12px}
+.progress{display:flex;gap:4px;margin-top:16px;max-width:320px}
+.progress span{height:6px;flex:1;background:rgba(255,255,255,.14);border-radius:99px}
+.progress .done{background:var(--primary-2)}
+.progress .now{background:var(--gold)}
 
-.notice{padding:20px;background:#ff98001f;border-radius:15px;text-align:center}
-.info{font-size:13px;color:#555;background:#f4f4f4;border-radius:10px;padding:11px;margin:0 0 14px}
+.section-title,.summary-title,.setup-title{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700;letter-spacing:-.01em;margin:0 0 18px;color:var(--text)}
+.section-title .ic,.summary-title .ic,.setup-title .ic{color:var(--gold)}
+.setup-title{font-size:20px}
 
+.notice{display:flex;flex-direction:column;align-items:center;gap:10px;padding:24px;background:var(--surface-2);border:1px dashed var(--border-2);color:var(--text-2);border-radius:var(--r);text-align:center}
+.notice .ic{width:26px;height:26px;color:var(--text-3)}
+.info{font-size:13px;color:var(--text);background:var(--primary-soft);border:1px solid rgba(111,99,246,.35);border-radius:12px;padding:12px 14px;margin:0 0 14px}
+
+/* =========================================================
+   FORM
+   ========================================================= */
 .field{margin-bottom:16px}
-label{display:block;font-size:13px;margin-bottom:7px;color:#555}
-input,select{width:100%;height:52px;border:1px solid #bbb;border-radius:10px;padding:0 14px;background:#fff}
-.helper{font-size:12px;color:#777;margin-top:6px}
+label{display:block;font-size:13px;font-weight:600;margin-bottom:8px;color:var(--text-2)}
+input,select{width:100%;height:48px;border:1px solid var(--border-2);border-radius:12px;padding:0 14px;background:var(--bg);color:var(--text);outline:none;transition:border-color .15s,box-shadow .15s}
+input::placeholder{color:var(--text-3)}
+input:hover,select:hover{border-color:#3e4a74}
+input:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+select{-webkit-appearance:none;appearance:none;padding-right:42px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23a2abc8' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+option{background:var(--surface);color:var(--text)}
+.helper{font-size:12px;color:var(--text-3);margin-top:7px}
+.helper.error{color:var(--red)}
+.search{position:relative}
+.search .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none}
+.search input{padding-left:42px}
 
-.arrow{text-align:center;font-size:26px;margin:0 0 16px}
+.arrow{width:36px;height:36px;margin:-4px auto 12px;display:flex;align-items:center;justify-content:center;color:var(--primary-2);background:var(--primary-soft);border-radius:50%}
 .quick-title{font-size:13px;font-weight:bold;margin:10px 0 8px}
 .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 
-.btn{border:0;border-radius:10px;padding:13px 8px;font-weight:bold}
-.outline{background:#fff;border:1px solid #aaa}
-.tonal{background:#eee8ff;color:#4527a0}
-.primary{background:#4527a0;color:#fff}
-.danger{background:#ffebee;color:#c62828;border:1px solid #ef9a9a}
-.success{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7}
+/* =========================================================
+   BUTONLAR
+   ========================================================= */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:12px;padding:12px 14px;min-height:44px;font-weight:700;font-size:14px;color:var(--text);transition:background .15s,border-color .15s,box-shadow .15s,transform .1s}
+.btn:active:not(:disabled){transform:translateY(1px)}
+.btn.sm{min-height:38px;padding:8px 12px;font-size:13px}
+.outline{background:var(--surface-2);border-color:var(--border-2)}
+.outline:hover:not(:disabled){background:var(--surface-3)}
+.tonal{background:var(--primary-soft);border-color:var(--primary);color:#fff;box-shadow:0 0 0 1px var(--primary) inset}
+.primary{background:linear-gradient(180deg,var(--primary-2),var(--primary));color:#fff;box-shadow:0 6px 18px rgba(111,99,246,.35)}
+.primary:hover:not(:disabled){filter:brightness(1.08)}
+.cta{background:linear-gradient(180deg,var(--cta),var(--cta-2));color:#fff;box-shadow:0 8px 22px rgba(248,106,18,.35)}
+.cta:hover{filter:brightness(1.06)}
+.danger{background:var(--red-soft);color:var(--red);border-color:rgba(255,91,107,.3)}
+.danger:hover:not(:disabled){background:rgba(255,91,107,.2)}
+.success{background:var(--green-soft);color:var(--green);border-color:rgba(47,210,127,.3)}
+.btn.icon-only{width:44px;padding:0}
 
-.complete,.full{width:100%;height:58px;margin-top:20px;font-size:16px}
+.complete,.full{width:100%;min-height:52px;margin-top:20px;font-size:15px}
+.outline.full{color:var(--text-2)}
 
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.player-setup{display:grid;grid-template-columns:1fr 38px;gap:8px;margin-bottom:8px}
+.player-setup{display:grid;grid-template-columns:40px 1fr;gap:8px;margin-bottom:8px;counter-increment:pl}
+.player-setup span{order:-1;display:flex;align-items:center;justify-content:center;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);font-weight:700;font-size:14px;color:var(--text-2)}
+.player-setup span::before{content:counter(pl)}
+#okeyPlayerFields,#unoPlayerFields{counter-reset:pl}
 .remove{width:38px;padding:0;font-size:18px}
-.team-settings{display:none;margin-top:16px;padding:14px;background:#eee8ff;border-radius:13px}
+.team-settings{display:none;margin-top:16px;padding:16px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r)}
 .team-settings.show{display:block}
 .team-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.switch-row{display:flex;align-items:center;gap:10px;margin:7px 0 4px}
-.switch-row input{height:20px;width:20px}
-.switch-row label{margin:0;font-size:14px;font-weight:bold}
+.switch-row{display:flex;align-items:center;gap:12px;margin:12px 0 4px}
+.switch-row input{-webkit-appearance:none;appearance:none;width:44px;height:26px;padding:0;border-radius:99px;background:var(--surface-3);border:1px solid var(--border-2);position:relative;cursor:pointer;flex-shrink:0;transition:background .2s,border-color .2s}
+.switch-row input::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.switch-row input:checked{background:var(--primary);border-color:var(--primary)}
+.switch-row input:checked::after{transform:translateX(18px)}
+.switch-row label{margin:0;font-size:14px;font-weight:600;color:var(--text);cursor:pointer}
 
-.summary-title{font-size:18px;font-weight:bold;margin-bottom:15px}
+/* =========================================================
+   LOBİ
+   ========================================================= */
+.lobby-hero{position:relative;overflow:hidden;border-radius:24px;padding:40px 36px;min-height:260px;display:flex;align-items:center;margin-bottom:28px;
+  background:linear-gradient(90deg,rgba(13,17,34,.97) 0%,rgba(13,17,34,.9) 38%,rgba(13,17,34,.35) 75%,rgba(13,17,34,.2) 100%),url(img/hero.webp) right center/cover no-repeat,var(--surface);
+  border:1px solid var(--border);box-shadow:var(--shadow)}
+.lobby-hero::after{content:'';position:absolute;inset:0;background:radial-gradient(500px 260px at 10% 110%,rgba(111,99,246,.35),transparent 70%);pointer-events:none}
+.lh-content{position:relative;z-index:1;max-width:440px}
+.eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--gold);background:rgba(255,197,61,.12);border:1px solid rgba(255,197,61,.25);padding:5px 10px;border-radius:99px}
+.lobby-hero h2{font-size:38px;line-height:1.1;font-weight:800;letter-spacing:-.03em;margin:14px 0 10px}
+.lobby-hero p{margin:0 0 22px;color:var(--text-2);font-size:15px;max-width:380px}
+.lobby-hero .btn{min-height:48px;padding:12px 22px}
 
+.sec-head{display:flex;align-items:center;gap:10px;margin:0 2px 14px}
+.sec-head h3{margin:0;font-size:17px;font-weight:700;letter-spacing:-.01em}
+.sec-head .count{font-size:12px;font-weight:700;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);padding:2px 9px;border-radius:99px;font-variant-numeric:tabular-nums}
+.sec-head .btn{margin-left:auto}
+
+.game-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:32px}
+.game-card{position:relative;overflow:hidden;border-radius:var(--r-lg);min-height:220px;padding:18px;display:flex;flex-direction:column;justify-content:flex-end;
+  background:linear-gradient(180deg,rgba(13,17,34,.1) 0%,rgba(13,17,34,.6) 45%,rgba(13,17,34,.97) 82%),var(--img) center/cover no-repeat;border:1px solid var(--border);box-shadow:var(--shadow);transition:transform .2s,border-color .2s}
+.game-card:hover{transform:translateY(-3px);border-color:var(--border-2)}
+.game-card .pill{position:absolute;top:14px;left:14px;font-size:12px;font-weight:700;color:#fff;background:rgba(111,99,246,.85);padding:5px 10px;border-radius:99px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.game-card .pill.empty{background:rgba(13,17,34,.7);color:var(--text-2)}
+.game-card h4{margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.game-card p{margin:3px 0 14px;font-size:13px;color:#c3c9de;text-shadow:0 1px 8px rgba(0,0,0,.7)}
+.game-card .btn{align-self:flex-start}
+
+.toolbar{padding:14px;margin-bottom:14px}
+.room-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.room-chips .btn{min-height:34px;padding:6px 14px;font-size:13px;border-radius:99px}
+.room-chips .outline{background:transparent}
+
+.room-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.room-row{display:flex;align-items:center;gap:14px;padding:12px;margin:0;border-radius:var(--r)}
+.room-row:hover{border-color:var(--border-2)}
+.room-thumb{width:64px;height:64px;border-radius:12px;object-fit:cover;flex-shrink:0;background:var(--surface-3)}
+.room-info{flex:1;min-width:0}
+.room-name{display:flex;align-items:center;gap:6px;font-size:16px;font-weight:700}
+.room-name span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.room-name .ic{color:var(--text-3)}
+.room-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin-top:6px;font-size:12px;color:var(--text-2)}
+.badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--surface-3);color:var(--text)}
+.badge.g-monopoly{background:rgba(47,210,127,.14);color:#5fe3a0}
+.badge.g-okey{background:rgba(255,197,61,.14);color:var(--gold)}
+.badge.g-uno{background:rgba(255,91,107,.14);color:#ff8a96}
+.room-actions{display:flex;gap:8px;flex-shrink:0}
+.room-actions .btn{min-height:40px}
+.room-actions .danger{width:40px;padding:0;background:transparent;border-color:var(--border)}
+.room-actions .danger:hover{background:var(--red-soft);border-color:rgba(255,91,107,.3)}
+.credits{margin:28px 2px 0;font-size:11px;color:var(--text-3);line-height:1.6}
+.lock{display:inline-flex}
+
+/* =========================================================
+   MONOPOLY — OYUNCULAR
+   ========================================================= */
 .player-card{padding:16px}
 .player-top{display:flex;align-items:center}
 .player-info{flex:1;min-width:0}
-.player-name{font-weight:bold}
-.balance{color:#2e7d32;font-weight:bold;margin-top:4px}
+.player-name{font-weight:700}
+.tag-out{display:inline-block;margin-left:6px;font-size:11px;font-weight:700;color:var(--red);background:var(--red-soft);padding:1px 7px;border-radius:6px;vertical-align:middle}
+.balance{color:var(--text);font-weight:800;letter-spacing:-.01em;margin-top:6px;font-variant-numeric:tabular-nums}
 .player-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}
 .player-manage{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .manual-row{margin-top:8px;display:flex;gap:6px}
 .manual-row .btn{flex:0 0 52px;font-size:20px;padding:0}
 .manual-row input{flex:1;height:46px;text-align:center}
-.rename-input{width:100%;height:44px;border:1px solid #aaa;border-radius:10px;padding:0 12px;font-size:16px;font-weight:bold}
-.lock{font-size:13px;color:#777}
+.rename-input{width:100%;height:42px;border-radius:10px;padding:0 12px;font-size:15px;font-weight:700}
 .player-name-line{display:flex;align-items:center;gap:6px;min-width:0}
 .player-name-line .player-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.player-mini-actions{display:flex;align-items:center;gap:3px;flex-shrink:0}
-.mini-btn{width:27px;height:27px;padding:0;border:0;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1}
-.edit-mini{background:#eee8ff}
-.delete-mini{background:#ffebee}
-.player-compact-actions{display:flex;align-items:center;gap:3px;margin-left:auto;flex-shrink:0}
-.money-mini{width:30px;height:28px;padding:0;border:0;border-radius:7px;font-size:12px;font-weight:bold}
-.money-minus{background:#f4f4f4;border:1px solid #aaa}
-.money-plus{background:#eee8ff}
-.money-plus-strong{background:#4527a0;color:#fff}
-.manual-mini{display:flex;align-items:center;gap:3px;margin-left:3px}
-.manual-mini input{width:72px;height:28px;border:1px solid #bbb;border-radius:7px;padding:0 6px;font-size:11px;text-align:center}
-.manual-mini button{width:28px;height:28px;padding:0;border:0;border-radius:7px;font-size:15px;font-weight:bold}
+.player-mini-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.mini-btn{width:30px;height:30px;padding:0;border:1px solid transparent;border-radius:9px;display:flex;align-items:center;justify-content:center;background:transparent;color:var(--text-3);transition:background .15s,color .15s}
+.mini-btn .ic{width:16px;height:16px}
+.mini-btn:hover{background:var(--surface-3);color:var(--text)}
+.delete-mini:hover{background:var(--red-soft);color:var(--red)}
+.player-compact-actions{display:flex;align-items:center;gap:4px;margin-left:auto;flex-shrink:0}
+.money-mini{width:30px;height:30px;padding:0;border:1px solid transparent;border-radius:9px;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;transition:background .15s}
+.money-minus{background:var(--red-soft);color:#ff8a96;border-color:rgba(255,91,107,.22)}
+.money-minus:hover{background:rgba(255,91,107,.2)}
+.money-plus{background:var(--green-soft);color:#5fe3a0;border-color:rgba(47,210,127,.22)}
+.money-plus:hover{background:rgba(47,210,127,.2)}
+.money-plus-strong{background:var(--green);color:#06210f}
+.manual-mini{display:flex;align-items:center;gap:4px;margin-left:4px}
+.manual-mini input{width:72px;height:30px;border-radius:9px;padding:0 6px;font-size:12px;text-align:center}
+.manual-mini button{width:30px;height:30px;padding:0;border-radius:9px;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center}
 
-.score-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.score-card{border:1px solid #e1e1e1;border-radius:14px;padding:13px;background:#fafafa}
-.score-card.leading{border:2px solid #66bb6a;background:#f0fff1}
-.score-name{font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.score-total{font-size:21px;font-weight:bold;margin:7px 0;color:#333}
-.leading .score-total{color:#2e7d32}
-.score-note{font-size:12px;color:#777;min-height:16px}
-.score-entry{display:flex;gap:6px;margin-top:11px}
-.score-entry input{height:42px;text-align:center;min-width:0}
-.hundred{white-space:nowrap;padding:0 8px;font-size:12px;background:#ffebee;color:#c62828;border:1px solid #ef9a9a}
-.entry-label{font-size:12px;color:#666;margin-top:11px}
-.result{padding:16px;border-radius:13px;background:#e8f5e9;color:#1b5e20;text-align:center;font-weight:bold;font-size:16px;margin-bottom:15px}
-.result small{display:block;font-weight:normal;margin-top:5px}
-.history-round{border-left:4px solid #7e57c2;padding:0 0 3px 12px;margin:16px 0}
+/* =========================================================
+   SKOR KARTLARI (Okey / UNO)
+   ========================================================= */
+.score-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.score-card{position:relative;border:1px solid var(--border);border-radius:var(--r);padding:16px;background:var(--surface-2);transition:border-color .2s}
+.score-card.leading{border-color:rgba(47,210,127,.6);background:linear-gradient(180deg,rgba(47,210,127,.09),transparent 60%),var(--surface-2)}
+.score-card.leading::after{content:'Lider';position:absolute;top:14px;right:14px;font-size:11px;font-weight:700;color:var(--green);background:var(--green-soft);padding:3px 8px;border-radius:6px}
+.score-name{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:52px}
+.score-total{font-size:28px;font-weight:800;letter-spacing:-.02em;margin:6px 0 4px;color:var(--text);font-variant-numeric:tabular-nums}
+.leading .score-total{color:var(--green)}
+.score-note{font-size:12px;color:var(--text-3);min-height:16px}
+.score-entry{display:flex;gap:6px;margin-top:8px}
+.score-entry input{height:44px;text-align:center;min-width:0;font-size:16px;font-weight:700}
+.score-entry input[id^="penalty_"]{font-size:14px;font-weight:600}
+.hundred{white-space:nowrap;padding:0 12px;min-height:44px;font-size:13px;background:var(--red-soft);color:var(--red);border-color:rgba(255,91,107,.3)}
+.entry-label{font-size:12px;font-weight:600;color:var(--text-2);margin-top:14px}
+.result{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:var(--r);background:linear-gradient(90deg,rgba(255,197,61,.16),rgba(255,197,61,.04));border:1px solid rgba(255,197,61,.35);color:var(--text);font-weight:800;font-size:17px;margin-bottom:16px}
+.result>.ic{width:40px;height:40px;padding:9px;border-radius:12px;background:rgba(255,197,61,.18);color:var(--gold)}
+.result small{display:block;font-weight:600;font-size:13px;color:var(--text-2);margin-top:2px}
+.card .result{display:block;text-align:center;font-size:15px}
+.history-round{border-left:3px solid var(--primary);padding:0 0 3px 12px;margin:16px 0}
 .history-round:first-child{margin-top:0}
 .history-head{display:flex;justify-content:space-between;gap:8px;font-weight:bold;margin-bottom:8px}
-.history-head span{font-size:12px;color:#777;font-weight:normal}
-.history-lines{display:grid;gap:6px}
-.history-line{display:flex;justify-content:space-between;gap:12px;font-size:14px}
-.history-line b{font-weight:bold}
-.negative{color:#c62828}
+.history-head span{font-size:12px;color:var(--text-3);font-weight:normal}
+.history-lines{display:grid;gap:8px}
+.history-line{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px;padding:11px 14px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border)}
+.history-line b{font-weight:700;font-variant-numeric:tabular-nums}
+.dot-lead{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-left:6px;vertical-align:middle;box-shadow:0 0 0 3px var(--green-soft)}
+.negative{color:var(--red) !important}
+.pos{color:var(--green) !important}
+.muted{color:var(--text-3) !important;font-weight:500}
 
-.nav{position:fixed;bottom:0;left:0;right:0;height:70px;background:#fff;border-top:1px solid #ddd;display:flex;z-index:10}
-.nav button{flex:1;border:0;background:#fff;color:#555;font-size:12px}
-.nav button.active{color:#4527a0;font-weight:bold}
-.page{display:none}
-.page.active{display:block}
+/* =========================================================
+   ALT MENÜ
+   ========================================================= */
+.nav{position:fixed;bottom:0;left:0;right:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));gap:8px;background:rgba(14,19,36,.92);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--border);display:flex;justify-content:center;z-index:10}
+.nav button{flex:1;max-width:220px;height:54px;border:0;border-radius:14px;background:transparent;color:var(--text-3);font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:background .15s,color .15s}
+.nav button .ic{width:20px;height:20px}
+.nav button.active{color:#fff;background:var(--primary-soft)}
+.nav button.active .ic{color:var(--primary-2)}
 
-.players-head{display:flex;align-items:center}
-.players-head>div{flex:1}
-.players-head h2,.history-title{margin:0 0 5px;font-size:25px}
-.players-head button{white-space:nowrap}
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:44px 20px}
+.empty .big{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2)}
+.empty .big .ic{width:28px;height:28px}
+.empty h3{font-size:17px;font-weight:700;margin:16px 0 6px}
+.empty p{margin:0 0 18px;color:var(--text-2);font-size:14px}
 
-.empty{text-align:center;padding:40px}
-.empty .big{font-size:55px}
-
-.history-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #eee}
+.history-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
 .history-item:last-child{border:0}
 .history-main{flex:1}
-.history-main b{display:block}
-.history-time{font-size:12px;color:#777;margin-top:5px}
-.history-amount{font-weight:bold}
-.avatar{width:42px;height:42px;border-radius:50%;background:#e8defd;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0}
+.history-main b{display:block;font-weight:600}
+.history-time{font-size:12px;color:var(--text-3);margin-top:3px;font-variant-numeric:tabular-nums}
+.history-amount{font-weight:800;font-variant-numeric:tabular-nums}
+.avatar{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--primary-soft);color:var(--primary-2)}
+.avatar.in{background:var(--green-soft);color:var(--green)}
+.avatar.out{background:var(--red-soft);color:var(--red)}
 
-dialog{border:0;border-radius:18px;padding:0;width:min(430px,calc(100% - 32px));box-shadow:0 10px 50px #0004}
-dialog::backdrop{background:#0006}
-.dialog-body{padding:22px}
-.dialog-body h3{margin-top:0}
-.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;flex-wrap:wrap}
+/* =========================================================
+   DİYALOG + TOAST
+   ========================================================= */
+dialog{border:1px solid var(--border-2);border-radius:var(--r-lg);padding:0;width:min(460px,calc(100% - 32px));background:var(--surface);color:var(--text);box-shadow:0 30px 80px rgba(0,0,0,.55)}
+dialog[open]{animation:popIn .2s ease-out}
+@keyframes popIn{from{opacity:0;transform:translateY(8px) scale(.98)}}
+dialog::backdrop{background:rgba(5,8,18,.7);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.dialog-body{padding:24px}
+.dialog-body h3{margin:0 0 20px;font-size:19px;font-weight:800;letter-spacing:-.01em}
+.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:22px;flex-wrap:wrap}
 
-.toast{position:fixed;left:50%;bottom:85px;transform:translateX(-50%);background:#333;color:#fff;padding:13px 18px;border-radius:10px;z-index:20;display:none;max-width:90%;text-align:center}
-.toast.show{display:block}
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);display:none;align-items:center;gap:8px;max-width:calc(100% - 32px);background:var(--surface-3);color:var(--text);border:1px solid var(--border-2);padding:12px 16px;border-radius:12px;z-index:20;font-size:14px;font-weight:600;box-shadow:0 16px 40px rgba(0,0,0,.45)}
+.toast.ok{border-color:rgba(47,210,127,.45)}
+.toast.ok::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
+.toast.show{display:flex;animation:toastIn .2s ease-out}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,8px)}}
 
+/* Oyun seçimi */
 .game-choice{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.game-choice button{height:64px;font-size:14px}
-.room-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.room-chips .btn{padding:9px 12px;font-size:13px}
-.uno-table{width:100%;border-collapse:collapse;font-size:14px}
-.uno-table th,.uno-table td{padding:9px 8px;text-align:center;border-bottom:1px solid #eee;white-space:nowrap}
-.uno-table th{font-size:12px;color:#555}
-.uno-table th:first-child,.uno-table td:first-child{text-align:left;position:sticky;left:0;background:#fff;color:#777;font-size:12px}
-.uno-table small{color:#777;font-weight:normal}
-.uno-table .tot td{font-weight:bold;border-top:2px solid #7e57c2;border-bottom:0;color:#202124}
-.uno-table .tot td:first-child{color:#4527a0}
+.game-choice button{min-height:76px;flex-direction:column;gap:6px;font-size:13px}
+.game-choice button .ic{width:20px;height:20px}
+.game-choice.with-img button{padding:0;overflow:hidden;gap:0;justify-content:flex-start}
+.game-choice.with-img img{width:100%;aspect-ratio:16/10;object-fit:cover;opacity:.75;transition:opacity .15s}
+.game-choice.with-img span{padding:9px 4px}
+.game-choice.with-img .tonal img{opacity:1}
+
+/* Tur tablosu */
+.uno-table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;font-variant-numeric:tabular-nums}
+.uno-table th,.uno-table td{padding:11px 10px;text-align:center;border-bottom:1px solid var(--border);white-space:nowrap}
+.uno-table th{font-size:12px;font-weight:700;color:var(--text-2)}
+.uno-table th:first-child,.uno-table td:first-child{text-align:left;position:sticky;left:0;background:var(--surface);color:var(--text-3);font-size:13px}
+.uno-table small{color:var(--text-3);font-weight:500}
+.uno-table .tot td{font-weight:800;border-bottom:0;color:var(--text);background:var(--surface-2)}
+.uno-table .tot td:first-child{color:var(--text-2);background:var(--surface-2)}
 
 /* =========================================================
    OYUNCU GRID SİSTEMİ (Monopoly)
    ========================================================= */
 .player-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.player-grid .player-card{padding:14px;display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(0,0,0,0.14),0 1px 8px rgba(0,0,0,0.08) !important;background:#f9f9f9}
+.player-grid .player-card{padding:14px;margin:0;display:flex;flex-direction:column;background:var(--surface-2);box-shadow:none}
 .player-grid.players-1{grid-template-columns:1fr}
 .player-grid.players-3 .player-card:nth-child(3){grid-column:1 / -1}
 .player-grid.players-5 .player-card:nth-child(5){grid-column:1 / -1}
@@ -185,33 +387,52 @@ dialog::backdrop{background:#0006}
 .player-grid .player-info{width:100%;min-width:0}
 .player-grid .player-name-line{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:5px;width:100%}
 .player-grid .player-name-line .player-name{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:16px !important}
-.player-grid .player-mini-actions{display:flex;gap:4px;flex-shrink:0}
-.player-grid .player-compact-actions{width:100%;margin-top:9px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
-.player-grid .money-mini{width:100%;min-width:0;height:31px;font-size:10px}
-.player-grid .manual-mini{grid-column:1 / -1;width:100%;margin:0;display:grid;grid-template-columns:32px minmax(0,1fr) 32px;gap:4px}
-.player-grid .manual-mini input{width:100%;height:31px;min-width:0}
-.player-grid .manual-mini button{width:32px;height:31px}
-.player-grid .balance{margin-top:9px;font-size:15px;white-space:nowrap}
+.player-grid .player-mini-actions{display:flex;gap:2px;flex-shrink:0}
+.player-grid .player-compact-actions{width:100%;margin-top:12px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.player-grid .money-mini{width:100%;min-width:0;height:34px;font-size:12px}
+.player-grid .manual-mini{grid-column:1 / -1;width:100%;margin:0;display:grid;grid-template-columns:34px minmax(0,1fr) 34px;gap:5px}
+.player-grid .manual-mini input{width:100%;height:34px;min-width:0}
+.player-grid .manual-mini button{width:34px;height:34px}
+.player-grid .balance{order:-1;margin:4px 0 0;font-size:20px;white-space:nowrap}
+.player-grid .player-info{display:flex;flex-direction:column}
+.player-grid .player-name-line{order:-2}
 
 @media(min-width:481px){.player-grid .player-card{min-height:150px}}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+@media(max-width:900px){
+  .game-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .room-list{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  .game-cards{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px 28px;padding:0 16px 4px;scrollbar-width:none}
+  .game-cards::-webkit-scrollbar{display:none}
+  .game-card{flex:0 0 78%;scroll-snap-align:start;min-height:190px}
+  .lobby-hero{padding:28px 22px;min-height:0;background:linear-gradient(180deg,rgba(13,17,34,.55) 0%,rgba(13,17,34,.92) 55%,rgba(13,17,34,.98) 100%),url(img/hero.webp) center top/cover no-repeat,var(--surface)}
+  .lobby-hero h2{font-size:30px;margin-top:70px}
+}
 
 /* =========================================================
    TELEFON GÖRÜNÜMÜ
    ========================================================= */
 @media(max-width:480px){
-  main{padding:12px 12px 90px}
-  .quick button{font-size:13px}
-  .appbar h1{font-size:17px}
+  main{padding:14px 12px 96px}
   .appbar{padding:0 12px}
-  .appbar .add-player-btn{padding:8px 9px;font-size:12px}
-  .appbar .status{font-size:11px}
+  .appbar h1{font-size:16px}
+  .appbar .status{height:32px;padding:0 10px;font-size:11px}
+  .add-player-btn{height:34px;padding:0 10px;font-size:12px}
+  .iconbtn{width:34px;height:34px;border-radius:10px}
+  .game-cards{margin:0 -12px 24px;padding:0 12px 4px}
+  .lobby-hero{border-radius:20px;padding:24px 18px}
+  .lobby-hero h2{font-size:27px}
   .player-card{padding:14px}
   .player-top{align-items:flex-start}
   .player-info{min-width:0;width:100%}
   .player-name-line{display:flex;align-items:center;flex-wrap:wrap;width:100%;gap:5px}
   .player-name-line .player-name{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:17px !important}
-  .player-mini-actions{display:flex;flex:0 0 auto;gap:4px}
-  .mini-btn{width:30px;height:30px}
+  .player-mini-actions{display:flex;flex:0 0 auto;gap:2px}
   .player-compact-actions{width:100%;flex:0 0 100%;margin:8px 0 0 0;display:flex;align-items:center;justify-content:flex-start;gap:4px}
   .money-mini{flex:0 0 38px;width:38px;height:32px;font-size:11px;padding:0}
   .manual-mini{display:flex;align-items:center;gap:4px;margin-left:auto;flex:0 0 auto}
@@ -219,89 +440,103 @@ dialog::backdrop{background:#0006}
   .manual-mini button{flex:0 0 32px;width:32px;height:32px}
   .balance{font-size:16px;margin-top:8px;white-space:nowrap}
   .player-manage{grid-template-columns:1fr 1fr;gap:8px}
-  .players-head{gap:8px}
-  .players-head h2,.history-title{font-size:22px}
   .quick{grid-template-columns:repeat(2,1fr)}
   .history-item{gap:10px}
-  .history-item .avatar{width:42px;height:42px;flex:0 0 42px}
   .history-main{min-width:0}
   .history-main b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .history-amount{font-size:13px;white-space:nowrap}
 
-  .card{padding:15px;border-radius:15px}
+  .card{padding:16px;border-radius:16px}
+  .toolbar{padding:12px}
+  .room-row{padding:10px;gap:12px}
+  .room-thumb{width:56px;height:56px}
+  .room-actions .btn.primary{padding:0 14px}
   .score-grid{gap:8px}
-  .score-card{padding:10px}
-  .score-total{font-size:19px}
+  .score-card{padding:12px}
+  .score-card.leading::after{top:12px;right:10px}
+  .score-total{font-size:23px}
   .team-row{grid-template-columns:1fr}
-  .hero{padding:18px}
-  .history-line{font-size:13px}
+  .total,.hero{padding:20px 18px;min-height:150px}
+  .total .money{font-size:28px}
+  .hero .big{font-size:24px}
+  .history-line{font-size:13px;padding:10px 12px}
+  .game-choice{gap:8px}
 
   .player-grid{gap:8px}
-  .player-grid .player-card{padding:11px}
+  .player-grid .player-card{padding:12px}
   .player-grid .player-name-line .player-name{font-size:15px !important}
-  .player-grid .mini-btn{width:27px;height:27px;font-size:12px}
-  .player-grid .player-compact-actions{gap:3px}
-  .player-grid .money-mini{height:30px;font-size:10px}
-  .player-grid .manual-mini{grid-template-columns:30px minmax(0,1fr) 30px;gap:3px}
-  .player-grid .manual-mini input,.player-grid .manual-mini button{height:30px}
+  .player-grid .mini-btn{width:26px;height:26px}
+  .player-grid .mini-btn .ic{width:14px;height:14px}
+  .player-grid .player-compact-actions{gap:4px}
+  .player-grid .money-mini{height:32px;font-size:11px}
+  .player-grid .manual-mini{grid-template-columns:32px minmax(0,1fr) 32px;gap:4px}
+  .player-grid .manual-mini input,.player-grid .manual-mini button{height:32px}
+  .player-grid .balance{font-size:17px}
 }
 
 @media(max-width:390px){
-  main{padding:10px 8px 82px;width:100%;max-width:100%;overflow-x:hidden}
+  main{padding:12px 10px 90px;width:100%;max-width:100%;overflow-x:hidden}
   .card{padding:14px;border-radius:14px}
-  .appbar{padding:0 8px;gap:4px}
-  .appbar h1{font-size:15px;margin-left:5px}
-  .appbar-right{gap:4px}
-  .appbar .status{font-size:9px;gap:3px}
-  .appbar .dot{width:7px;height:7px}
-  .appbar .add-player-btn{padding:7px 7px;font-size:10px;border-radius:8px}
-  .appbar .iconbtn{font-size:18px;padding:3px}
+  .appbar{padding:0 10px;gap:8px}
+  .appbar h1{font-size:15px}
+  .appbar-right{gap:6px}
+  .appbar .status{font-size:0;gap:0;padding:0;width:32px;justify-content:center}
+  .brand-mark{width:30px;height:30px}
+  .add-player-btn{padding:0 9px;font-size:11px}
   .player-card{padding:11px;width:100%;max-width:100%;overflow:hidden}
   .player-info{width:100%;max-width:100%;min-width:0}
   .player-name-line{width:100%;max-width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px}
   .player-name-line .player-name{min-width:0;max-width:100%;font-size:16px !important}
-  .player-mini-actions{gap:3px}
-  .mini-btn{width:27px;height:27px;font-size:12px}
   .player-compact-actions{grid-column:1 / -1;width:100%;min-width:0;margin:5px 0 0;display:flex;gap:3px;overflow:hidden}
   .money-mini{flex:1 1 0;width:auto;min-width:0;height:30px;font-size:10px}
   .manual-mini{margin-left:auto;gap:3px;flex:1 1 auto;min-width:0}
   .manual-mini input{width:0;min-width:0;flex:1 1 auto;height:30px;font-size:10px;padding:0 3px}
   .manual-mini button{flex:0 0 30px;width:30px;height:30px;font-size:14px}
   .balance{font-size:15px;margin-top:7px}
-  .total{padding:18px 10px}
-  .total .icon{font-size:34px}
   .total .money{font-size:25px}
-  .total .label{font-size:11px}
-  .total .players{font-size:12px}
   .quick{grid-template-columns:1fr 1fr;gap:6px}
-  .quick .btn{padding:11px 5px;font-size:12px}
   .player-manage{grid-template-columns:1fr 1fr;gap:6px}
-  .player-manage .btn{padding:11px 5px;font-size:12px}
-  input,select{height:48px;font-size:14px}
-  .complete,.full{height:54px;font-size:14px}
-  .players-head h2,.history-title{font-size:20px}
-  .players-head{gap:5px}
-  .players-head button{padding:10px 8px;font-size:11px}
-  .history-item{gap:7px}
-  .history-main{min-width:0}
-  .history-main b{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .history-amount{font-size:12px;white-space:nowrap}
+  input,select{height:46px;font-size:14px}
+  .complete,.full{min-height:50px;font-size:14px}
+  .lobby-hero h2{font-size:24px}
+  .room-name{font-size:15px}
+  .room-thumb{width:48px;height:48px;border-radius:10px}
+  .room-actions .btn.primary{padding:0 12px;font-size:13px}
+  .room-actions .danger{width:36px}
+  .player-grid .money-mini{font-size:10px}
+  .history-item{gap:8px}
+  .history-main b{font-size:13px}
+  .history-amount{font-size:12px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
 }
 </style>
 </head>
 <body>
 
 <header class="appbar">
-  <button id="backBtn" class="iconbtn" onclick="leaveRoom()" title="Masalara dön" style="display:none">◀️</button>
-  <span id="appLogo" style="font-size:25px">🎲</span>
-  <h1 id="appTitle">OYUN MASASI</h1>
+  <button id="backBtn" class="iconbtn" onclick="leaveRoom()" title="Masalara dön" aria-label="Masalara dön" style="display:none"><i data-ic="back"></i></button>
+  <span id="appLogo" class="brand-mark"><i data-ic="dice"></i></span>
+  <h1 id="appTitle">Oyun <span class="accent">Masası</span></h1>
   <div class="appbar-right">
-    <button id="playerAddBtn" class="add-player-btn" onclick="openPlayerDialog()" style="display:none">＋ Oyuncu</button>
+    <button id="playerAddBtn" class="add-player-btn" onclick="openPlayerDialog()" style="display:none"><i data-ic="plus"></i>Oyuncu</button>
     <span class="status"><span id="connDot" class="dot"></span><span id="connText">Bağlanıyor...</span></span>
-    <button id="resetBtn" class="iconbtn" onclick="resetGame()" title="Oyunu sıfırla" style="display:none">↻</button>
+    <button id="resetBtn" class="iconbtn" onclick="resetGame()" title="Oyunu sıfırla" aria-label="Oyunu sıfırla" style="display:none"><i data-ic="reset"></i></button>
   </div>
 </header>
 
+<div class="shell">
+<aside class="sidebar">
+  <div class="side-label"><i data-ic="crown" data-cls="ic-gold"></i>Oyunlar</div>
+  <button class="side-item" data-filter="all" onclick="sideNav('all')"><span class="side-ico"><i data-ic="grid"></i></span>Tüm masalar<span class="count" id="sideCount_all"></span></button>
+  <button class="side-item" data-filter="monopoly" onclick="sideNav('monopoly')"><img src="img/monopoly-sm.webp" alt="">Monopoly<span class="count" id="sideCount_monopoly"></span></button>
+  <button class="side-item" data-filter="okey" onclick="sideNav('okey')"><img src="img/okey-sm.webp" alt="">101 Okey<span class="count" id="sideCount_okey"></span></button>
+  <button class="side-item" data-filter="uno" onclick="sideNav('uno')"><img src="img/uno-sm.webp" alt="">UNO<span class="count" id="sideCount_uno"></span></button>
+  <button class="btn primary side-new" onclick="openRoomDialog()"><i data-ic="plus"></i>Yeni masa</button>
+  <div class="side-foot">Puanlar ve bakiyeler tüm cihazlarda canlı olarak senkronize edilir.</div>
+</aside>
 <main>
   <section id="roomsPage" class="page active"></section>
   <section id="monopolyPosPage" class="page"></section>
@@ -311,10 +546,11 @@ dialog::backdrop{background:#0006}
   <section id="unoSetupPage" class="page"></section>
   <section id="unoGamePage" class="page"></section>
 </main>
+</div>
 
 <nav id="mainNav" class="nav" style="display:none">
-  <button id="nav0" class="active" onclick="showPage(0)">💳<br>Ana Ekran</button>
-  <button id="nav1" onclick="showPage(1)">🧾<br>Geçmiş</button>
+  <button id="nav0" class="active" onclick="showPage(0)"><i data-ic="wallet"></i>Ana ekran</button>
+  <button id="nav1" onclick="showPage(1)"><i data-ic="receipt"></i>Geçmiş</button>
 </nav>
 
 <div id="toast" class="toast"></div>
@@ -322,11 +558,11 @@ dialog::backdrop{background:#0006}
 <!-- MASA EKLE -->
 <dialog id="roomDialog">
   <div class="dialog-body">
-    <h3>Masa Ekle</h3>
+    <h3>Yeni masa</h3>
     <div class="field">
       <label>Masa adı</label>
-      <input id="roomName" placeholder="Örn: Masa 1" oninput="hideRoomNameError()">
-      <div id="roomNameError" class="helper" style="color:#c62828;display:none"></div>
+      <input id="roomName" placeholder="Örn: Cuma akşamı" oninput="hideRoomNameError()">
+      <div id="roomNameError" class="helper error" style="display:none"></div>
     </div>
     <div class="field">
       <label>Şifre (opsiyonel)</label>
@@ -335,15 +571,15 @@ dialog::backdrop{background:#0006}
     </div>
     <div class="field">
       <label>Hangi oyunu oynamak istiyorsunuz?</label>
-      <div class="game-choice">
-        <button type="button" id="gameChoiceMonopoly" class="btn tonal" onclick="selectNewRoomGame('monopoly')">🎩<br>Monopoly</button>
-        <button type="button" id="gameChoiceOkey" class="btn outline" onclick="selectNewRoomGame('okey')">🀄<br>101 Okey</button>
-        <button type="button" id="gameChoiceUno" class="btn outline" onclick="selectNewRoomGame('uno')">🃏<br>UNO</button>
+      <div class="game-choice with-img">
+        <button type="button" id="gameChoiceMonopoly" class="btn tonal" onclick="selectNewRoomGame('monopoly')"><img src="img/monopoly-sm.webp" alt=""><span>Monopoly</span></button>
+        <button type="button" id="gameChoiceOkey" class="btn outline" onclick="selectNewRoomGame('okey')"><img src="img/okey-sm.webp" alt=""><span>101 Okey</span></button>
+        <button type="button" id="gameChoiceUno" class="btn outline" onclick="selectNewRoomGame('uno')"><img src="img/uno-sm.webp" alt=""><span>UNO</span></button>
       </div>
     </div>
     <div class="dialog-actions">
       <button class="btn outline" onclick="closeDialog('roomDialog')">İptal</button>
-      <button class="btn primary" onclick="createRoom()">Oluştur</button>
+      <button class="btn primary" onclick="createRoom()">Masayı oluştur</button>
     </div>
   </div>
 </dialog>
@@ -351,7 +587,7 @@ dialog::backdrop{background:#0006}
 <!-- MASA ŞİFRE -->
 <dialog id="roomPasswordDialog">
   <div class="dialog-body">
-    <h3 id="roomPasswordTitle">Şifre Gerekli</h3>
+    <h3 id="roomPasswordTitle">Şifre gerekli</h3>
     <input id="roomPasswordInput" type="password" placeholder="Şifreyi gir">
     <div class="dialog-actions">
       <button class="btn outline" onclick="closeDialog('roomPasswordDialog')">İptal</button>
@@ -362,7 +598,7 @@ dialog::backdrop{background:#0006}
 <!-- EK TUR -->
 <dialog id="extraRoundDialog">
   <div class="dialog-body">
-    <h3>➕ Ek Tur Ekle</h3>
+    <h3>Ek tur ekle</h3>
     <div class="field">
       <label>Kaç tur eklensin?</label>
       <select id="extraRoundCount">
@@ -383,7 +619,7 @@ dialog::backdrop{background:#0006}
 <!-- OYUNCU EKLE (Monopoly) -->
 <dialog id="playerDialog">
   <div class="dialog-body">
-    <h3>Oyuncu Ekle</h3>
+    <h3>Oyuncu ekle</h3>
     <input id="playerName" placeholder="Oyuncu adı" autofocus>
     <div class="field" style="margin-top:12px"><label>Başlangıç parası</label><input id="playerStart" inputmode="numeric" oninput="formatManualInput(this)"><div class="helper">15.000 = 15.000.000 ₺ (sonraki oyuncular için hatırlanır)</div></div>
     <div class="dialog-actions">
@@ -515,13 +751,80 @@ const inputFmt=n=>n.toLocaleString('tr-TR');
 function toast(msg,success=false){
   const t=document.getElementById('toast');
   t.textContent=msg;
-  t.style.background=success?'#2e7d32':'#333';
+  t.classList.toggle('ok',success);
   t.classList.add('show');
   clearTimeout(window.toastTimer);
   window.toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
 }
 
 function closeDialog(id){document.getElementById(id).close();}
+
+/* =========================================================
+   İKONLAR
+   ========================================================= */
+const ICONS={
+  back:'<path d="m15 18-6-6 6-6"/>',
+  reset:'<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  lock:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  trash:'<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/>',
+  edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+  flag:'<path d="M4 22V4"/><path d="M4 4h13l-2.5 4.5L17 13H4"/>',
+  undo:'<path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-4"/>',
+  swap:'<path d="M7 4 3 8l4 4"/><path d="M3 8h18"/><path d="m17 20 4-4-4-4"/><path d="M21 16H3"/>',
+  down:'<path d="M12 5v14"/><path d="m19 12-7 7-7-7"/>',
+  up:'<path d="M12 19V5"/><path d="m5 12 7-7 7 7"/>',
+  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+  list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+  trophy:'<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0Z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>',
+  alert:'<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>',
+  chart:'<path d="M3 3v18h18"/><path d="M7 16v-5M12 16V8M17 16v-8"/>',
+  sliders:'<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
+  wallet:'<path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>',
+  receipt:'<path d="M4 2v20l3-2 3 2 3-2 3 2 3-2 3 2V2l-3 2-3-2-3 2-3-2-3 2Z"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  card:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>',
+  arrowIn:'<path d="M17 7 7 17M17 17H7V7"/>',
+  arrowOut:'<path d="M7 17 17 7M7 7h10v10"/>',
+  play:'<path d="M7 4v16l13-8Z" fill="currentColor"/>',
+  crown:'<path d="m2 7 5 5 5-8 5 8 5-5-2 13H4Z"/>',
+  grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  dice:'<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.3" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor"/>',
+  handshake:'<path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.9-3.9a3 3 0 0 0-4.2 0l-.9.9a1 1 0 1 1-3-3l2.8-2.8a5.8 5.8 0 0 1 7 .9L21 7"/><path d="m21 3 1 11h-2M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3M3 4h8"/>'
+};
+function ic(n,cls){
+  return '<svg class="ic'+(cls?' '+cls:'')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(ICONS[n]||'')+'</svg>';
+}
+function hydrateIcons(root){
+  (root||document).querySelectorAll('i[data-ic]').forEach(el=>{el.outerHTML=ic(el.dataset.ic,el.dataset.cls);});
+}
+hydrateIcons();
+
+const GAME_INFO={
+  monopoly:{name:'Monopoly',img:'img/monopoly.webp',thumb:'img/monopoly-sm.webp',desc:'Banka ve para transferi takibi'},
+  okey:{name:'101 Okey',img:'img/okey.webp',thumb:'img/okey-sm.webp',desc:'Tur, ceza ve takım skorları'},
+  uno:{name:'UNO',img:'img/uno.webp',thumb:'img/uno-sm.webp',desc:'Yüksek veya düşük puan modu'}
+};
+
+function sideNav(f){
+  if(currentRoomKey!==null)leaveRoom();
+  roomSearch='';
+  const s=document.getElementById('roomSearch');
+  if(s)s.value='';
+  setRoomFilter(f);
+}
+
+function syncSidebar(){
+  const inRoom=currentRoomKey!==null;
+  const room=inRoom?roomsData[currentRoomKey]:null;
+  const active=inRoom?((room&&room.meta&&room.meta.game)||'monopoly'):roomFilter;
+  const counts={all:0,monopoly:0,okey:0,uno:0};
+  Object.values(roomsData).forEach(r=>{counts.all++;const g=(r&&r.meta&&r.meta.game)||'monopoly';if(counts[g]!==undefined)counts[g]++;});
+  document.querySelectorAll('.side-item').forEach(b=>b.classList.toggle('active',b.dataset.filter===active));
+  Object.keys(counts).forEach(k=>{const el=document.getElementById('sideCount_'+k);if(el)el.textContent=counts[k];});
+}
 
 function esc(s){
   return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
@@ -698,6 +1001,7 @@ function render(){
   const room=inRoom?roomsData[currentRoomKey]:null;
   const gameType=room&&room.meta?room.meta.game:null;
 
+  document.body.dataset.game=inRoom?(gameType||'monopoly'):'lobby';
   document.getElementById('roomsPage').classList.toggle('active',!inRoom);
 
   const showMonopoly=inRoom && gameType==='monopoly';
@@ -716,10 +1020,7 @@ function render(){
 
   document.getElementById('mainNav').style.display=showMonopoly?'flex':'none';
 
-  if(showMonopoly){
-    document.getElementById('nav0').innerHTML='💳<br>Ana Ekran';
-    document.getElementById('nav1').innerHTML='🧾<br>Geçmiş';
-  }
+
 
   document.getElementById('backBtn').style.display=inRoom?'':'none';
   document.getElementById('resetBtn').style.display=inRoom?'':'none';
@@ -729,9 +1030,10 @@ function render(){
   addBtn.disabled=!showMonopoly || players.length>=6;
   addBtn.title=players.length>=6?'Maksimum 6 oyuncu':'Oyuncu ekle';
 
-  document.getElementById('appTitle').textContent=(room&&room.meta&&room.meta.name)?room.meta.name:'OYUN MASASI';
-  document.getElementById('appLogo').textContent=!inRoom?'🎲':(gameType==='monopoly'?'🎩':(gameType==='uno'?'🃏':'🀄'));
+  if(room&&room.meta&&room.meta.name)document.getElementById('appTitle').textContent=room.meta.name;
+  else document.getElementById('appTitle').innerHTML='Oyun <span class="accent">Masası</span>';
   document.getElementById('appLogo').style.display=!inRoom?'':'none';
+  syncSidebar();
 
   if(!inRoom){renderRoomsList();return;}
 
@@ -761,30 +1063,51 @@ function renderRoomsList(){
 
   if(!document.getElementById('roomsListBody')){
     document.getElementById('roomsPage').innerHTML=`
-      <div class="card" id="roomFilterBar">
-        <input id="roomSearch" type="search" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="🔍 Masa ara..." value="${esc(roomSearch)}" oninput="onRoomSearch(this.value)">
+      <section class="lobby-hero">
+        <div class="lh-content">
+          <span class="eyebrow">${ic('dice','ic-sm')}Oyun gecesi</span>
+          <h2>Masanı kur,<br>oyun başlasın</h2>
+          <p>Monopoly bankası, 101 Okey ve UNO skorları tek yerde. Herkes aynı masayı canlı görür.</p>
+          <button class="btn cta" onclick="openRoomDialog()">${ic('plus')}Yeni masa aç</button>
+        </div>
+      </section>
+      <div class="sec-head">${ic('crown','ic-gold')}<h3>Oyunlar</h3></div>
+      <div class="game-cards" id="gameCards"></div>
+      <div class="sec-head">${ic('grid','ic-gold')}<h3>Masalar</h3><span class="count" id="roomCount"></span>
+        <button class="btn primary sm" onclick="openRoomDialog()">${ic('plus')}Masa ekle</button>
+      </div>
+      <div class="card toolbar" id="roomFilterBar">
+        <div class="search">${ic('search')}<input id="roomSearch" type="search" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Masa ara..." value="${esc(roomSearch)}" oninput="onRoomSearch(this.value)"></div>
         <div class="room-chips" id="roomChips"></div>
         <div class="helper" id="roomSearchHint" style="display:none">Arama tüm oyunlardaki masalarda yapılıyor.</div>
       </div>
-      <div id="roomsListBody"></div>`;
+      <div id="roomsListBody"></div>
+      <p class="credits">Görseller: Monopoly — David Stewart (CC BY 2.0) · Kapak — Yahya (CC BY-SA 4.0) · 101 Okey — Delphine74 (CC BY-SA 3.0) · UNO — Simon Ray / Unsplash. Wikimedia Commons ve Unsplash üzerinden.</p>`;
   }
+  const gameCounts={monopoly:0,okey:0,uno:0};
+  allKeys.forEach(k=>{const g=(roomsData[k]&&roomsData[k].meta&&roomsData[k].meta.game)||'monopoly';if(gameCounts[g]!==undefined)gameCounts[g]++;});
+  document.getElementById('gameCards').innerHTML=Object.keys(GAME_INFO).map(g=>{
+    const info=GAME_INFO[g];
+    return `
+      <article class="game-card" style="--img:url(${info.img})">
+        <span class="pill ${gameCounts[g]?'':'empty'}">${gameCounts[g]?gameCounts[g]+' masa':'Masa yok'}</span>
+        <h4>${info.name}</h4>
+        <p>${info.desc}</p>
+        <button class="btn primary sm" onclick="openRoomDialog();selectNewRoomGame('${g}')">${ic('plus')}Masa aç</button>
+      </article>`;
+  }).join('');
+  document.getElementById('roomCount').textContent=keys.length;
+  syncSidebar();
   document.getElementById('roomFilterBar').style.display=allKeys.length?'':'none';
   document.getElementById('roomSearchHint').style.display=q?'':'none';
-  document.getElementById('roomChips').innerHTML=[['all','Tümü'],['monopoly','🎩 Monopoly'],['okey','🀄 101 Okey'],['uno','🃏 UNO']]
+  document.getElementById('roomChips').innerHTML=[['all','Tümü'],['monopoly','Monopoly'],['okey','101 Okey'],['uno','UNO']]
     .map(([f,l])=>`<button type="button" class="btn ${!q&&roomFilter===f?'tonal':'outline'}" onclick="setRoomFilter('${f}')">${l}</button>`).join('');
 
   document.getElementById('roomsListBody').innerHTML=`
-    ${allKeys.length?`
-    <div class="card players-head">
-      <div><h2>🎲 Masalar</h2><span>${keys.length} Masa</span></div>
-      <button class="btn primary" onclick="openRoomDialog()">＋ Masa Ekle</button>
-    </div>`:''}
-
-    ${keys.length?keys.map(k=>{
+    ${keys.length?'<div class="room-list">'+keys.map(k=>{
       const room=roomsData[k];
       const meta=room.meta||{name:'İsimsiz Masa'};
       const gameType=meta.game;
-      const icon=gameType==='okey'?'🀄':(gameType==='uno'?'🃏':'🎩');
       const gameName=gameType==='okey'?'101 Okey':(gameType==='uno'?'UNO':'Monopoly');
 
       let subtitle='';
@@ -812,32 +1135,31 @@ function renderRoomsList(){
         }
       }
 
+      const g=GAME_INFO[gameType]||GAME_INFO.monopoly;
+
       return `
-        <div class="card player-card">
-          <div class="player-top">
-            <div class="player-info">
-              <div class="player-name" style="font-size:18px">
-                ${icon} ${esc(meta.name||'İsimsiz Masa')}
-                ${meta.password?'<span class="lock">🔒</span>':''}
-              </div>
-              <div class="balance" style="color:#777">${gameName}</div>
-              <div class="balance">${subtitle}</div>
-            </div>
+        <div class="card room-row">
+          <img class="room-thumb" src="${g.thumb}" alt="" loading="lazy">
+          <div class="room-info">
+            <div class="room-name"><span>${esc(meta.name||'İsimsiz Masa')}</span>${meta.password?`<span class="lock" title="Şifreli">${ic('lock','ic-sm')}</span>`:''}</div>
+            <div class="room-meta"><span class="badge g-${gameType||'monopoly'}">${gameName}</span><span>${subtitle}</span></div>
           </div>
-          <div class="player-manage">
-            <button class="btn success" onclick="enterRoom('${k}')">▶️ Masaya Gir</button>
-            <button class="btn danger" onclick="deleteRoom('${k}')">🗑️ Sil</button>
+          <div class="room-actions">
+            <button class="btn primary" onclick="enterRoom('${k}')">${ic('play','ic-sm')}Gir</button>
+            <button class="btn danger" onclick="deleteRoom('${k}')" title="Masayı sil" aria-label="Masayı sil">${ic('trash')}</button>
           </div>
         </div>`;
-    }).join(''):(allKeys.length?`
+    }).join('')+'</div>':(allKeys.length?`
       <div class="card empty">
-        <div class="big">🔍</div>
-        <h3>Eşleşen masa bulunamadı.</h3>
+        <div class="big">${ic('search')}</div>
+        <h3>Eşleşen masa bulunamadı</h3>
+        <p>Farklı bir isim ya da oyun filtresi dene.</p>
       </div>`:`
       <div class="card empty">
-        <div class="big">🎲</div>
-        <h3>Henüz masa yok.</h3>
-        <button class="btn primary" onclick="openRoomDialog()">＋ İlk Masayı Oluştur</button>
+        <div class="big">${ic('dice')}</div>
+        <h3>Henüz masa yok</h3>
+        <p>İlk masanı aç, oyunu seç ve oyuncuları ekle.</p>
+        <button class="btn primary" onclick="openRoomDialog()">${ic('plus')}İlk masayı oluştur</button>
       </div>`)}
   `;
 }
@@ -904,8 +1226,8 @@ function editPlayerName(key){
   playerInfo.innerHTML=`
     <input id="renameInput_${key}" class="rename-input" value="${esc(p.name)}" maxlength="30" autofocus>
     <div style="display:flex;gap:6px;margin-top:6px">
-      <button class="btn success" style="padding:8px 12px" onclick="renamePlayer('${key}')">✓ Kaydet</button>
-      <button class="btn outline" style="padding:8px 12px" onclick="mp_renderPOS()">İptal</button>
+      <button class="btn primary sm" onclick="renamePlayer('${key}')">${ic('check','ic-sm')}Kaydet</button>
+      <button class="btn outline sm" onclick="mp_renderPOS()">İptal</button>
     </div>
     <div class="balance">${fmt(p.balance)}</div>
   `;
@@ -1032,43 +1354,43 @@ function mp_renderPOS(){
 
   document.getElementById('monopolyPosPage').innerHTML=`
     <div class="total">
-      <div class="icon">💰</div>
-      <div class="label">MASADAKİ TOPLAM PARA</div>
+      <div class="icon">${ic('wallet')}</div>
+      <div class="label">Masadaki toplam para</div>
       <div class="money">${fmt(total)}</div>
-      <div class="players">${players.length}/6 oyuncu</div>
+      <div class="players">${ic('users','ic-sm')}${players.length}/6 oyuncu</div>
     </div>
 
     ${mp_toolsHtml()}
 
     <div class="card">
-      <div class="section-title">↔️ PARA TRANSFERİ</div>
+      <div class="section-title">${ic('swap')}Para transferi</div>
       ${players.length<2?`
-        <div class="notice">👥<br><br>Transfer yapmak için en az 2 oyuncu gerekli.</div>
+        <div class="notice">${ic('users')}Transfer yapmak için en az 2 oyuncu gerekli.</div>
       `:`
         <div class="field">
-          <label>Para Gönderen</label>
+          <label>Gönderen</label>
           <select id="fromSelect" onchange="selectedFrom=this.value===''?null:this.value;mp_renderPOS()">
             ${selectedFromHtml}${options}
           </select>
         </div>
-        <div class="arrow">↓</div>
+        <div class="arrow">${ic('down')}</div>
         <div class="field">
-          <label>Para Alacak</label>
+          <label>Alıcı</label>
           <select id="toSelect" onchange="selectedTo=this.value===''?null:this.value;mp_renderPOS()">
             ${selectedToHtml}${options}
           </select>
         </div>
         <div class="field">
-          <label>Transfer Tutarı</label>
+          <label>Tutar</label>
           <input id="amount" inputmode="numeric" placeholder="Örn: 1.500" value="${esc(amountValue)}" oninput="formatAmountInput(this)">
           <div class="helper">1.500 = 1.500.000 ₺</div>
         </div>
-        <button class="btn primary complete" onclick="transferMoney()">💳 ÖDEMEYİ TAMAMLA</button>
+        <button class="btn primary complete" onclick="transferMoney()">${ic('card')}Ödemeyi tamamla</button>
       `}
     </div>
 
     <div class="card">
-      <div class="summary-title">OYUNCU BAKİYELERİ</div>
+      <div class="summary-title">${ic('users')}Oyuncu bakiyeleri</div>
       ${players.length?`
         <div class="player-grid players-${players.length}">
           ${players.map(p=>`
@@ -1076,11 +1398,11 @@ function mp_renderPOS(){
               <div class="player-top">
                 <div class="player-info">
                   <div class="player-name-line">
-                    <div class="player-name" style="font-size:18px">${esc(p.name)}${p.out?' 🏳️':''}</div>
+                    <div class="player-name" style="font-size:18px">${esc(p.name)}${p.out?'<span class="tag-out">Elendi</span>':''}</div>
                     <div class="player-mini-actions">
-                      <button class="mini-btn edit-mini" onclick="editPlayerName('${p.key}')" title="İsmi değiştir">✏️</button>
-                      <button class="mini-btn edit-mini" onclick="toggleOut('${p.key}')" title="${p.out?'Oyuna geri al':'İflas / Elendi'}">${p.out?'↩️':'🏳️'}</button>
-                      <button class="mini-btn delete-mini" onclick="removePlayer('${p.key}')" title="Oyuncuyu sil">🗑️</button>
+                      <button class="mini-btn edit-mini" onclick="editPlayerName('${p.key}')" title="İsmi değiştir" aria-label="İsmi değiştir">${ic('edit')}</button>
+                      <button class="mini-btn edit-mini" onclick="toggleOut('${p.key}')" title="${p.out?'Oyuna geri al':'İflas / Elendi'}" aria-label="${p.out?'Oyuna geri al':'İflas / Elendi'}">${ic(p.out?'undo':'flag')}</button>
+                      <button class="mini-btn delete-mini" onclick="removePlayer('${p.key}')" title="Oyuncuyu sil" aria-label="Oyuncuyu sil">${ic('trash')}</button>
                     </div>
                   </div>
                   <div class="player-compact-actions">
@@ -1101,9 +1423,10 @@ function mp_renderPOS(){
           `).join('')}
         </div>
       `:`
-        <div style="text-align:center;padding:20px">
-          Henüz oyuncu eklenmedi.<br><br>
-          Yukarıdaki <b>＋ Oyuncu</b> butonundan ekleyebilirsin.
+        <div class="empty">
+          <div class="big">${ic('users')}</div>
+          <h3>Henüz oyuncu yok</h3>
+          <p>Sağ üstteki <b>Oyuncu</b> butonundan en fazla 6 oyuncu ekleyebilirsin.</p>
         </div>
       `}
     </div>
@@ -1112,28 +1435,29 @@ function mp_renderPOS(){
 
 function mp_renderHistory(){
   document.getElementById('monopolyHistoryPage').innerHTML=`
-    <div class="history-title">İşlem Geçmişi</div>
+    <h2 class="setup-title">${ic('receipt')}İşlem geçmişi</h2>
     ${mp_toolsHtml()}
     <div class="card">
       ${transactions.length?transactions.map(t=>{
         const time=new Date(t.time).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
-        let icon='↔️';
-        if(t.from==='Banka')icon='💰';
-        else if(t.to==='Banka')icon='💸';
+        let kind='', icon='swap';
+        if(t.from==='Banka'){kind='in';icon='arrowIn';}
+        else if(t.to==='Banka'){kind='out';icon='arrowOut';}
 
         return `
           <div class="history-item">
-            <div class="avatar">${icon}</div>
+            <div class="avatar ${kind}">${ic(icon)}</div>
             <div class="history-main">
               <b>${esc(t.from)} → ${esc(t.to)}</b>
               <div class="history-time">${time}</div>
             </div>
-            <div class="history-amount">${fmt(t.amount)}</div>
+            <div class="history-amount ${kind==='in'?'pos':(kind==='out'?'negative':'')}">${fmt(t.amount)}</div>
           </div>`;
       }).join(''):`
         <div class="empty">
-          <div class="big">🧾</div>
-          <div>Henüz işlem yapılmadı.</div>
+          <div class="big">${ic('receipt')}</div>
+          <h3>Henüz işlem yok</h3>
+          <p>Transferler ve banka işlemleri burada listelenir.</p>
         </div>
       `}
     </div>
@@ -1210,7 +1534,7 @@ function okeyLeaderInfo(includeCurrent=false){
 
 function okey_renderSetup(){
   document.getElementById('okeySetupPage').innerHTML=`
-    <div class="card"><h2 class="setup-title">🎲 Oyun Kurulumu</h2>
+    <div class="card"><h2 class="setup-title">${ic('sliders')}Oyun kurulumu</h2>
       <div class="field">
         <label>Tur sayısı</label>
         <select id="okeyRoundCount">${Array.from({length:20},(_,i)=>`<option value="${i+1}" ${i===3?'selected':''}>${i+1} tur</option>`).join('')}</select>
@@ -1233,7 +1557,7 @@ function okey_renderSetup(){
         </div>
         <div class="helper">1. ve 2. oyuncu ilk takımda; 3. ve 4. oyuncu ikinci takımda olur.</div>
       </div>
-      <button class="btn primary full" style="margin-top:20px" onclick="okey_createGame()">OYUNU BAŞLAT</button>
+      <button class="btn primary full" style="margin-top:20px" onclick="okey_createGame()">${ic('play','ic-sm')}Oyunu başlat</button>
     </div>`;
   okey_drawPlayerFields();
 }
@@ -1370,7 +1694,7 @@ function okey_renderGameBase(){
   if(isFinal){
     const min=Math.min(...finalInfo.totals), winners=finalInfo.leaders;
     const max=Math.max(...finalInfo.totals), diff=max-min;
-    result=`<div class="result">${winners.length>1?'🤝 Berabere tamamlandı!':`🏆 Kazanan: ${esc(sides[winners[0]].name)}`}<small>${diff?`${okeyIsTeamGame()?'Aradaki fark':'En yüksek skorla fark'}: ${okeyFmt(diff)} puan`:'Tüm taraflar aynı puanda.'}</small></div>`;
+    result=`<div class="result">${ic(winners.length>1?'handshake':'trophy')}<div>${winners.length>1?'Berabere tamamlandı':`Kazanan: ${esc(sides[winners[0]].name)}`}<small>${diff?`${okeyIsTeamGame()?'Aradaki fark':'En yüksek skorla fark'}: ${okeyFmt(diff)} puan`:'Tüm taraflar aynı puanda.'}</small></div></div>`;
   }else if(isLast&&roundsArr.length){
     const low=Math.min(...info.totals),leaders=info.leaders,max=Math.max(...info.totals),diff=max-low;
     result=`<div class="info">Son tura giriliyor. ${leaders.length===1?`<b>${esc(sides[leaders[0]].name)}</b> yeşil gösterilir ve ${okeyFmt(diff)} puan öndedir.`:'Puanlar şu an eşit.'}</div>`;
@@ -1381,13 +1705,13 @@ function okey_renderGameBase(){
   el.innerHTML=`
     <div class="hero">
       <div class="round">${isFinal?'OYUN TAMAMLANDI':`TUR ${current} / ${roundCount}`}</div>
-      <div class="big">${isFinal?'Sonuçlar hazır':'101 Okey Skor'}</div>
+      <div class="big">${isFinal?'Sonuçlar hazır':'101 Okey'}</div>
       <div class="sub">${sides.length===2&&sides[0].members.length===2?'Takımlı oyun':'Bireysel oyun'}</div>
       <div class="progress">${Array.from({length:roundCount},(_,i)=>`<span class="${i<roundsArr.length?'done':(i===roundsArr.length&&!isFinal?'now':'')}"></span>`).join('')}</div>
     </div>
     ${result}
     <div class="card">
-      <h2 class="section-title">${isFinal?'Nihai Puanlar':`${current}. Tur Puanları`}</h2>
+      <h2 class="section-title">${ic('trophy')}${isFinal?'Nihai puanlar':`${current}. tur puanları`}</h2>
       <div class="score-grid">
        ${sides.map((side,i)=>{
   const lead=(isFinal?finalInfo:info).leaders.includes(i);
@@ -1406,8 +1730,8 @@ function okey_renderGameBase(){
         </div>`).join('')}
       <div class="entry-label">Siler: <b class="${okeyCurrentBonus(i)<0?'negative':''}">${okeyFmt(okeyCurrentBonus(i))}</b></div>
       <div class="score-entry">
-        <button class="btn hundred" style="flex:1;height:42px" onclick="teamMinus100(${i})">−100 Siler</button>
-        ${okeyCurrentBonus(i)?`<button class="btn outline" style="padding:0 12px" onclick="teamBonusReset(${i})" title="Sıfırla">↩️</button>`:''}
+        <button class="btn hundred" style="flex:1" onclick="teamMinus100(${i})">−100 Siler</button>
+        ${okeyCurrentBonus(i)?`<button class="btn outline icon-only" onclick="teamBonusReset(${i})" title="Sıfırla" aria-label="Sıfırla">${ic('undo')}</button>`:''}
       </div>`
     :`
       <div class="entry-label">Bu tur puanı</div>
@@ -1418,8 +1742,8 @@ function okey_renderGameBase(){
     </div>`;
 }).join('')}
       </div>
-      ${!isFinal?`<button class="btn primary full" style="margin-top:18px" onclick="commitRound()">${isLast?'SON TURU BİTİR VE KAZANANI GÖSTER':'TURU KAYDET'}</button>`:''}
-    ${(isLast||isFinal)?`<button class="btn outline full" style="margin-top:10px" onclick="okey_openExtraRound()">➕ EK TUR EKLE</button>`:''}
+      ${!isFinal?`<button class="btn primary full" style="margin-top:18px" onclick="commitRound()">${ic('check','ic-sm')}${isLast?'Son turu bitir ve kazananı göster':'Turu kaydet'}</button>`:''}
+    ${(isLast||isFinal)?`<button class="btn outline full" style="margin-top:10px" onclick="okey_openExtraRound()">${ic('plus','ic-sm')}Ek tur ekle</button>`:''}
     </div>
   `;
 }
@@ -1448,12 +1772,12 @@ function okey_renderGame(){
     const currentTotals=okeyTotals(false), lowest=Math.min(...currentTotals), highest=Math.max(...currentTotals), difference=highest-lowest;
     const leaders=currentTotals.map((score,i)=>score===lowest?i:-1).filter(i=>i>=0);
     const differenceHtml=`
-      <div class="card" style="border:2px solid #d9c8ff">
-        <h2 class="section-title">📊 Son Turdan Önceki Farklar</h2>
+      <div class="card glow">
+        <h2 class="section-title">${ic('chart')}Son turdan önceki farklar</h2>
         <div class="history-lines">
           ${[...sides.keys()].sort((a,b)=>currentTotals[a]-currentTotals[b]).map((i,rank)=>{
             const side=sides[i], gap=currentTotals[i]-lowest;
-            return `<div class="history-line"><span>${rank+1}. ${esc(side.name)} ${leaders.includes(i)&&difference?'🟢':''}</span><b style="${leaders.includes(i)&&difference?'color:#2e7d32':''}">${okeyFmt(currentTotals[i])}${gap?` <small style="color:#777;font-weight:normal">(+${okeyFmt(gap)} fark)</small>`:' <small style="color:#2e7d32;font-weight:normal">(en düşük)</small>'}</b></div>`;
+            return `<div class="history-line"><span>${rank+1}. ${esc(side.name)}${leaders.includes(i)&&difference?'<span class="dot-lead"></span>':''}</span><b class="${leaders.includes(i)&&difference?'pos':''}">${okeyFmt(currentTotals[i])}${gap?` <small class="muted">(+${okeyFmt(gap)} fark)</small>`:' <small class="pos" style="font-weight:normal">(en düşük)</small>'}</b></div>`;
           }).join('')}
         </div>
         <div class="result" style="margin:14px 0 0">${difference?(leaders.length===1?`${esc(sides[leaders[0]].name)} önde`:'Puanlar eşit')+' · '+(okeyIsTeamGame()?'Aradaki fark':'En yüksek fark')+': '+okeyFmt(difference)+' puan':'Puanlar eşit · Fark: 0 puan'}</div>
@@ -1465,25 +1789,25 @@ function okey_renderGame(){
 
   el.insertAdjacentHTML('beforeend',`
     <div class="card">
-      <h2 class="section-title">⚠️ Ceza / Siler Tablosu</h2>
+      <h2 class="section-title">${ic('alert')}Ceza / siler tablosu</h2>
       <div class="score-grid">
         ${sides.map((side,i)=>`
           <div class="score-card">
             <div class="score-name">${esc(side.name)}</div>
             <div class="score-note">Toplam ceza: ${okeyFmt(okeyPenaltyTotal(i))}</div>
             <div class="score-entry">
-              <input id="penalty_${i}" type="number"placeholder="Sayı Giriniz">
-              <button class="btn tonal" onclick="addPenalty(${i})">Ekle</button>
+              <input id="penalty_${i}" type="number" placeholder="Puan" aria-label="Ceza puanı">
+              <button class="btn outline" onclick="addPenalty(${i})">Ekle</button>
             </div>
             <div class="score-note" style="margin-top:9px">${okeyPenaltiesArray(i).length?okeyPenaltiesArray(i).map(p=>`${p.amount>0?'+':''}${okeyFmt(p.amount)}`).join(' • '):'Henüz ceza / siler yok.'}</div>
-            ${okeyPenaltiesArray(i).length?`<button class="btn outline" style="margin-top:8px;padding:7px 10px;font-size:12px" onclick="okeyUndoPenalty(${i})">↩️ Geri al</button>`:''}
+            ${okeyPenaltiesArray(i).length?`<button class="btn outline sm" style="margin-top:10px" onclick="okeyUndoPenalty(${i})">${ic('undo','ic-sm')}Geri al</button>`:''}
           </div>`).join('')}
       </div>
     </div>`);
 
   if(roundsArr.length)el.insertAdjacentHTML('beforeend',`
     <div class="card">
-      <h2 class="section-title">🧾 Turlar</h2>
+      <h2 class="section-title">${ic('list')}Turlar</h2>
       <div style="overflow-x:auto">
         <table class="uno-table">
           <thead><tr><th></th>${sides.map(side=>`<th>${esc(side.name)}</th>`).join('')}</tr></thead>
@@ -1534,12 +1858,12 @@ function uno_setMode(m){
 
 function uno_renderSetup(){
   document.getElementById('unoSetupPage').innerHTML=`
-    <div class="card"><h2 class="setup-title">🃏 UNO Kurulumu</h2>
+    <div class="card"><h2 class="setup-title">${ic('sliders')}UNO kurulumu</h2>
       <div class="field">
         <label>Oyun şekli</label>
         <div class="game-choice" style="grid-template-columns:1fr 1fr">
-          <button type="button" id="unoModeHigh" class="btn outline" onclick="uno_setMode('high')">⬆️<br>YÜKSEK PUAN</button>
-          <button type="button" id="unoModeLow" class="btn outline" onclick="uno_setMode('low')">⬇️<br>DÜŞÜK PUAN</button>
+          <button type="button" id="unoModeHigh" class="btn outline" onclick="uno_setMode('high')">${ic('up')}<span>Yüksek puan</span></button>
+          <button type="button" id="unoModeLow" class="btn outline" onclick="uno_setMode('low')">${ic('down')}<span>Düşük puan</span></button>
         </div>
       </div>
       <div id="unoHighBox" class="field">
@@ -1557,7 +1881,7 @@ function uno_renderSetup(){
         <select id="unoPlayerCount" onchange="uno_drawPlayerFields()">${Array.from({length:9},(_,i)=>`<option value="${i+2}" ${i+2===4?'selected':''}>${i+2} oyuncu</option>`).join('')}</select>
       </div>
       <div id="unoPlayerFields"></div>
-      <button class="btn primary full" style="margin-top:20px" onclick="uno_createGame()">OYUNU BAŞLAT</button>
+      <button class="btn primary full" style="margin-top:20px" onclick="uno_createGame()">${ic('play','ic-sm')}Oyunu başlat</button>
     </div>`;
   uno_drawPlayerFields(true);
   uno_setMode(unoSetupMode);
@@ -1629,13 +1953,13 @@ function uno_renderGame(){
   el.innerHTML=`
     <div class="hero">
       <div class="round">${done?'OYUN TAMAMLANDI':(low?`TUR ${current} / ${cfg.roundCount}`:`TUR ${current}`)}</div>
-      <div class="big">${done?'Sonuçlar hazır':'UNO Skor'}</div>
+      <div class="big">${done?'Sonuçlar hazır':'UNO'}</div>
       <div class="sub">${low?'Düşük puan kazanır':'Yüksek puan kazanır • Hedef '+unoFmt(cfg.target)}</div>
       ${low?`<div class="progress">${Array.from({length:cfg.roundCount},(_,i)=>`<span class="${i<rounds.length?'done':(i===rounds.length&&!done?'now':'')}"></span>`).join('')}</div>`:''}
     </div>
-    ${done?`<div class="result">${leaders.length>1?'🤝 Berabere tamamlandı!':`🏆 Kazanan: ${esc(names[leaders[0]])}`}<small>${leaders.length>1?leaders.map(i=>esc(names[i])).join(' & ')+' • ':''}${unoFmt(best)} puan</small></div>`:''}
+    ${done?`<div class="result">${ic(leaders.length>1?'handshake':'trophy')}<div>${leaders.length>1?'Berabere tamamlandı':`Kazanan: ${esc(names[leaders[0]])}`}<small>${leaders.length>1?leaders.map(i=>esc(names[i])).join(' & ')+' • ':''}${unoFmt(best)} puan</small></div></div>`:''}
     <div class="card">
-      <h2 class="section-title">${done?'Nihai Puanlar':`Tur ${current} Puanları`}</h2>
+      <h2 class="section-title">${ic('trophy')}${done?'Nihai puanlar':`${current}. tur puanları`}</h2>
       <div class="score-grid">
         ${names.map((name,i)=>`
           <div class="score-card ${!allSame&&leaders.includes(i)?'leading':''}">
@@ -1650,11 +1974,11 @@ function uno_renderGame(){
               </div>`:''}
           </div>`).join('')}
       </div>
-      ${!done?`<button class="btn primary full" style="margin-top:18px" onclick="uno_commitRound()">${isLast?'SON TURU BİTİR VE KAZANANI GÖSTER':'TURU KAYDET'}</button>`:''}
+      ${!done?`<button class="btn primary full" style="margin-top:18px" onclick="uno_commitRound()">${ic('check','ic-sm')}${isLast?'Son turu bitir ve kazananı göster':'Turu kaydet'}</button>`:''}
     </div>
     ${rounds.length?`
     <div class="card">
-      <h2 class="section-title">🧾 Turlar</h2>
+      <h2 class="section-title">${ic('list')}Turlar</h2>
       <div style="overflow-x:auto">
         <table class="uno-table">
           <thead><tr><th></th>${names.map(n=>`<th>${esc(n)}</th>`).join('')}</tr></thead>
@@ -1679,9 +2003,9 @@ function uno_renderGame(){
 /* Monopoly */
 function mp_toolsHtml(){
   const active=players.filter(p=>!p.out);
-  const win=players.length>=2&&active.length===1?`<div class="result">🏆 Kazanan: ${esc(active[0].name)}</div>`:'';
+  const win=players.length>=2&&active.length===1?`<div class="result">${ic('trophy')}<div>Kazanan: ${esc(active[0].name)}<small>Masada kalan son oyuncu</small></div></div>`:'';
   if(!transactions.length)return win;
-  return `${win}<button class="btn outline full" style="margin-bottom:16px" onclick="mp_undoLast()">↩️ Son işlemi geri al</button>`;
+  return `${win}<button class="btn outline full" style="margin:0 0 16px" onclick="mp_undoLast()">${ic('undo','ic-sm')}Son işlemi geri al</button>`;
 }
 
 function mp_undoLast(){
@@ -1730,7 +2054,7 @@ function okey_addExtraRounds(){
 }
 function okey_toolsHtml(){
   if(!okeyRoundsArray().length)return '';
-  return `<button class="btn outline full" style="margin-bottom:16px" onclick="okey_undoRound()">↩️ Son turu geri al</button>`;
+  return `<button class="btn outline full" style="margin:0 0 16px" onclick="okey_undoRound()">${ic('undo','ic-sm')}Son turu geri al</button>`;
 }
 
 function okey_undoRound(){
@@ -1771,7 +2095,7 @@ function okeyUndoPenalty(i){
 /* UNO */
 function uno_toolsHtml(){
   if(!unoRoundsArray().length)return '';
-  return `<button class="btn outline full" style="margin-bottom:16px" onclick="uno_undoRound()">↩️ Son turu geri al</button>`;
+  return `<button class="btn outline full" style="margin:0 0 16px" onclick="uno_undoRound()">${ic('undo','ic-sm')}Son turu geri al</button>`;
 }
 
 function uno_undoRound(){
