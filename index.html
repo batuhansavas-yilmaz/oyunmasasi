@@ -106,7 +106,6 @@ main{max-width:1040px;margin:0 auto;padding:20px 16px 100px;min-width:0}
 .side-item img,.side-item .side-ico{width:38px;height:38px;border-radius:10px;object-fit:cover;flex-shrink:0}
 .side-item .side-ico{display:flex;align-items:center;justify-content:center;background:var(--surface-3);color:var(--text-2)}
 .side-item .count{margin-left:auto;font-size:12px;color:var(--text-3);font-variant-numeric:tabular-nums}
-.side-new{margin-top:14px;justify-content:center}
 .side-foot{margin-top:auto;padding:12px 10px 0;font-size:11px;color:var(--text-3);line-height:1.5}
 
 /* =========================================================
@@ -171,8 +170,6 @@ option{background:var(--surface);color:var(--text)}
 .tonal{background:var(--primary-soft);border-color:var(--primary);color:#fff;box-shadow:0 0 0 1px var(--primary) inset}
 .primary{background:linear-gradient(180deg,var(--primary-2),var(--primary));color:#fff;box-shadow:0 6px 18px rgba(111,99,246,.35)}
 .primary:hover:not(:disabled){filter:brightness(1.08)}
-.cta{background:linear-gradient(180deg,var(--cta),var(--cta-2));color:#fff;box-shadow:0 8px 22px rgba(248,106,18,.35)}
-.cta:hover{filter:brightness(1.06)}
 .danger{background:var(--red-soft);color:var(--red);border-color:rgba(255,91,107,.3)}
 .danger:hover:not(:disabled){background:rgba(255,91,107,.2)}
 .success{background:var(--green-soft);color:var(--green);border-color:rgba(47,210,127,.3)}
@@ -207,13 +204,11 @@ option{background:var(--surface);color:var(--text)}
 .lh-content{position:relative;z-index:1;max-width:440px}
 .eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--gold);background:rgba(255,197,61,.12);border:1px solid rgba(255,197,61,.25);padding:5px 10px;border-radius:99px}
 .lobby-hero h2{font-size:38px;line-height:1.1;font-weight:800;letter-spacing:-.03em;margin:14px 0 10px}
-.lobby-hero p{margin:0 0 22px;color:var(--text-2);font-size:15px;max-width:380px}
-.lobby-hero .btn{min-height:48px;padding:12px 22px}
+.lobby-hero p{margin:0;color:var(--text-2);font-size:15px;max-width:380px}
 
 .sec-head{display:flex;align-items:center;gap:10px;margin:0 2px 14px}
 .sec-head h3{margin:0;font-size:17px;font-weight:700;letter-spacing:-.01em}
 .sec-head .count{font-size:12px;font-weight:700;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);padding:2px 9px;border-radius:99px;font-variant-numeric:tabular-nums}
-.sec-head .btn{margin-left:auto}
 
 .game-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:32px}
 .game-card{position:relative;overflow:hidden;border-radius:var(--r-lg);min-height:220px;padding:18px;display:flex;flex-direction:column;justify-content:flex-end;
@@ -361,10 +356,6 @@ dialog::backdrop{background:rgba(5,8,18,.7);-webkit-backdrop-filter:blur(4px);ba
 .game-choice{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .game-choice button{min-height:76px;flex-direction:column;gap:6px;font-size:13px}
 .game-choice button .ic{width:20px;height:20px}
-.game-choice.with-img button{padding:0;overflow:hidden;gap:0;justify-content:flex-start}
-.game-choice.with-img img{width:100%;aspect-ratio:16/10;object-fit:cover;opacity:.75;transition:opacity .15s}
-.game-choice.with-img span{padding:9px 4px}
-.game-choice.with-img .tonal img{opacity:1}
 
 /* Tur tablosu */
 .uno-table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;font-variant-numeric:tabular-nums}
@@ -531,10 +522,9 @@ dialog::backdrop{background:rgba(5,8,18,.7);-webkit-backdrop-filter:blur(4px);ba
 <aside class="sidebar">
   <div class="side-label"><i data-ic="crown" data-cls="ic-gold"></i>Oyunlar</div>
   <button class="side-item" data-filter="all" onclick="sideNav('all')"><span class="side-ico"><i data-ic="grid"></i></span>Tüm masalar<span class="count" id="sideCount_all"></span></button>
-  <button class="side-item" data-filter="monopoly" onclick="sideNav('monopoly')"><img src="img/monopoly-sm.webp" alt="">Monopoly<span class="count" id="sideCount_monopoly"></span></button>
   <button class="side-item" data-filter="okey" onclick="sideNav('okey')"><img src="img/okey-sm.webp" alt="">101 Okey<span class="count" id="sideCount_okey"></span></button>
+  <button class="side-item" data-filter="monopoly" onclick="sideNav('monopoly')"><img src="img/monopoly-sm.webp" alt="">Monopoly<span class="count" id="sideCount_monopoly"></span></button>
   <button class="side-item" data-filter="uno" onclick="sideNav('uno')"><img src="img/uno-sm.webp" alt="">UNO<span class="count" id="sideCount_uno"></span></button>
-  <button class="btn primary side-new" onclick="openRoomDialog()"><i data-ic="plus"></i>Yeni masa</button>
   <div class="side-foot">Puanlar ve bakiyeler tüm cihazlarda canlı olarak senkronize edilir.</div>
 </aside>
 <main>
@@ -558,24 +548,16 @@ dialog::backdrop{background:rgba(5,8,18,.7);-webkit-backdrop-filter:blur(4px);ba
 <!-- MASA EKLE -->
 <dialog id="roomDialog">
   <div class="dialog-body">
-    <h3>Yeni masa</h3>
+    <h3 id="roomDialogTitle">Yeni masa</h3>
     <div class="field">
       <label>Masa adı</label>
-      <input id="roomName" placeholder="Örn: Cuma akşamı" oninput="hideRoomNameError()">
+      <input id="roomName" placeholder="Örn: Cumartesi gecesi" oninput="hideRoomNameError()">
       <div id="roomNameError" class="helper error" style="display:none"></div>
     </div>
     <div class="field">
       <label>Şifre (opsiyonel)</label>
       <input id="roomPassword" type="password" placeholder="Boş bırakabilirsin">
       <div class="helper">Şifre koyarsan, masaya girmek ve masayı silmek için gerekecek.</div>
-    </div>
-    <div class="field">
-      <label>Hangi oyunu oynamak istiyorsunuz?</label>
-      <div class="game-choice with-img">
-        <button type="button" id="gameChoiceMonopoly" class="btn tonal" onclick="selectNewRoomGame('monopoly')"><img src="img/monopoly-sm.webp" alt=""><span>Monopoly</span></button>
-        <button type="button" id="gameChoiceOkey" class="btn outline" onclick="selectNewRoomGame('okey')"><img src="img/okey-sm.webp" alt=""><span>101 Okey</span></button>
-        <button type="button" id="gameChoiceUno" class="btn outline" onclick="selectNewRoomGame('uno')"><img src="img/uno-sm.webp" alt=""><span>UNO</span></button>
-      </div>
     </div>
     <div class="dialog-actions">
       <button class="btn outline" onclick="closeDialog('roomDialog')">İptal</button>
@@ -804,8 +786,8 @@ function hydrateIcons(root){
 hydrateIcons();
 
 const GAME_INFO={
-  monopoly:{name:'Monopoly',img:'img/monopoly.webp',thumb:'img/monopoly-sm.webp',desc:'Banka ve para transferi takibi'},
   okey:{name:'101 Okey',img:'img/okey.webp',thumb:'img/okey-sm.webp',desc:'Tur, ceza ve takım skorları'},
+  monopoly:{name:'Monopoly',img:'img/monopoly.webp',thumb:'img/monopoly-sm.webp',desc:'Banka ve para transferi takibi'},
   uno:{name:'UNO',img:'img/uno.webp',thumb:'img/uno-sm.webp',desc:'Yüksek veya düşük puan modu'}
 };
 
@@ -845,19 +827,13 @@ function roomRef(sub){
    MASA (ODA) YÖNETİMİ
    ========================================================= */
 
-function selectNewRoomGame(g){
-  newRoomGame=g;
-  hideRoomNameError();
-  document.getElementById('gameChoiceMonopoly').className='btn '+(g==='monopoly'?'tonal':'outline');
-  document.getElementById('gameChoiceOkey').className='btn '+(g==='okey'?'tonal':'outline');
-  document.getElementById('gameChoiceUno').className='btn '+(g==='uno'?'tonal':'outline');
-}
-
-function openRoomDialog(){
+function openRoomDialog(game){
+  newRoomGame=game||'monopoly';
+  const info=GAME_INFO[newRoomGame];
+  document.getElementById('roomDialogTitle').textContent='Yeni '+(info?info.name:newRoomGame)+' Masası';
   document.getElementById('roomName').value='';
   hideRoomNameError();
   document.getElementById('roomPassword').value='';
-  selectNewRoomGame('monopoly');
   document.getElementById('roomDialog').showModal();
 }
 
@@ -1082,14 +1058,11 @@ function renderRoomsList(){
           <span class="eyebrow">${ic('dice','ic-sm')}Oyun gecesi</span>
           <h2>Masanı kur,<br>oyun başlasın</h2>
           <p>Monopoly bankası, 101 Okey ve UNO skorları tek yerde. Herkes aynı masayı canlı görür.</p>
-          <button class="btn cta" onclick="openRoomDialog()">${ic('plus')}Yeni masa aç</button>
         </div>
       </section>
       <div class="sec-head">${ic('crown','ic-gold')}<h3>Oyunlar</h3></div>
       <div class="game-cards" id="gameCards"></div>
-      <div class="sec-head">${ic('grid','ic-gold')}<h3>Masalar</h3><span class="count" id="roomCount"></span>
-        <button class="btn primary sm" onclick="openRoomDialog()">${ic('plus')}Masa ekle</button>
-      </div>
+      <div class="sec-head">${ic('grid','ic-gold')}<h3>Masalar</h3><span class="count" id="roomCount"></span></div>
       <div class="card toolbar" id="roomFilterBar">
         <div class="search">${ic('search')}<input id="roomSearch" type="search" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Masa ara..." value="${esc(roomSearch)}" oninput="onRoomSearch(this.value)"></div>
         <div class="room-chips" id="roomChips"></div>
@@ -1107,14 +1080,14 @@ function renderRoomsList(){
         <span class="pill ${gameCounts[g]?'':'empty'}">${gameCounts[g]?gameCounts[g]+' masa':'Masa yok'}</span>
         <h4>${info.name}</h4>
         <p>${info.desc}</p>
-        <button class="btn primary sm" onclick="openRoomDialog();selectNewRoomGame('${g}')">${ic('plus')}Masa aç</button>
+        <button class="btn primary sm" onclick="openRoomDialog('${g}')">${ic('plus')}Masa aç</button>
       </article>`;
   }).join('');
   document.getElementById('roomCount').textContent=keys.length;
   syncSidebar();
   document.getElementById('roomFilterBar').style.display=allKeys.length?'':'none';
   document.getElementById('roomSearchHint').style.display=q?'':'none';
-  document.getElementById('roomChips').innerHTML=[['all','Tümü'],['monopoly','Monopoly'],['okey','101 Okey'],['uno','UNO']]
+  document.getElementById('roomChips').innerHTML=[['all','Tümü'],['okey','101 Okey'],['monopoly','Monopoly'],['uno','UNO']]
     .map(([f,l])=>`<button type="button" class="btn ${!q&&roomFilter===f?'tonal':'outline'}" onclick="setRoomFilter('${f}')">${l}</button>`).join('');
 
   document.getElementById('roomsListBody').innerHTML=`
@@ -1173,7 +1146,6 @@ function renderRoomsList(){
         <div class="big">${ic('dice')}</div>
         <h3>Henüz masa yok</h3>
         <p>İlk masanı aç, oyunu seç ve oyuncuları ekle.</p>
-        <button class="btn primary" onclick="openRoomDialog()">${ic('plus')}İlk masayı oluştur</button>
       </div>`)}
   `;
 }
