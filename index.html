@@ -75,6 +75,10 @@ img{display:block;max-width:100%}
 .appbar .status{font-size:12px;font-weight:600;color:var(--text-2);display:flex;align-items:center;gap:7px;height:36px;padding:0 12px;border:1px solid var(--border);border-radius:99px;background:var(--surface);white-space:nowrap}
 .appbar .dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
 .appbar .dot.on{background:var(--green);box-shadow:0 0 0 3px var(--green-soft)}
+.appbar .github-btn{width:42px;height:42px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent;box-shadow:0 2px 8px rgba(2,5,18,.35);transition:filter .15s,transform .15s}
+.appbar .github-btn:hover{filter:brightness(1.08)}
+.appbar .github-btn:active{filter:brightness(.94);transform:scale(.96)}
+.appbar .github-btn img{width:100%;height:100%;display:block}
 .iconbtn{border:1px solid var(--border);background:var(--surface);color:var(--text);width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;padding:0;flex-shrink:0;transition:background .15s,border-color .15s}
 .iconbtn:hover{background:var(--surface-2);border-color:var(--border-2)}
 .add-player-btn{display:inline-flex;align-items:center;gap:6px;height:38px;border:0;background:var(--primary);color:#fff;border-radius:11px;padding:0 14px;font-weight:700;font-size:13px;transition:background .15s}
@@ -413,6 +417,7 @@ dialog::backdrop{background:rgba(5,8,18,.7);-webkit-backdrop-filter:blur(4px);ba
   .appbar{padding:0 12px}
   .appbar h1{font-size:16px}
   .appbar .status{height:32px;padding:0 10px;font-size:11px}
+  .appbar .github-btn{width:34px;height:34px}
   .add-player-btn{height:34px;padding:0 10px;font-size:12px}
   .iconbtn{width:34px;height:34px;border-radius:10px}
   .game-cards{margin:0 -12px 24px;padding:0 12px 4px 20px;scroll-padding-left:20px}
@@ -513,6 +518,7 @@ dialog::backdrop{background:rgba(5,8,18,.7);-webkit-backdrop-filter:blur(4px);ba
   <h1 id="appTitle">Oyun <span class="accent">Masası</span></h1>
   <div class="appbar-right">
     <button id="playerAddBtn" class="add-player-btn" onclick="openPlayerDialog()" style="display:none"><i data-ic="plus"></i>Oyuncu</button>
+    <a class="github-btn" href="https://github.com/batuhansavas-yilmaz/oyunmasasi" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub deposunu aç"><img src="img/github-button.png" alt=""></a>
     <span class="status"><span id="connDot" class="dot"></span><span id="connText">Bağlanıyor...</span></span>
     <button id="resetBtn" class="iconbtn" onclick="resetGame()" title="Oyunu sıfırla" aria-label="Oyunu sıfırla" style="display:none"><i data-ic="reset"></i></button>
   </div>
