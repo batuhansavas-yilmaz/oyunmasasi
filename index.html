@@ -514,15 +514,20 @@ dialog::backdrop{background:rgba(5,8,18,.7);-webkit-backdrop-filter:blur(4px);ba
 .frombsy-card{
   position:relative;overflow:hidden;display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;
   background:
-    linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px),
-    radial-gradient(240px 140px at 20% 0%,rgba(55,92,214,.55),transparent 72%),
-    linear-gradient(160deg,#0a1638 0%,#050a18 52%,#081127 100%);
-  background-size:22px 22px,22px 22px,auto,auto;
+    linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px),
+    radial-gradient(230px 130px at 24% 0%,rgba(55,92,214,.5),transparent 72%),
+    linear-gradient(180deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,.02) 36%,rgba(0,0,0,.3) 100%),
+    linear-gradient(165deg,#0b1a42 0%,#050a18 55%,#03060f 100%);
+  background-size:22px 22px,22px 22px,auto,auto,auto;
   border:1px solid rgba(111,155,255,.28);
   box-shadow:0 12px 28px rgba(2,8,24,.24),inset 0 1px 0 rgba(255,255,255,.06);
   color:#f3f6ff;text-decoration:none;
   transition:border-color .2s,transform .2s,box-shadow .2s;
+}
+.frombsy-card::before{
+  content:'';position:absolute;right:-42px;top:50%;width:150px;height:150px;margin-top:-75px;border-radius:50%;
+  border:1px dashed rgba(140,170,255,.16);box-shadow:0 0 44px rgba(111,155,255,.12);pointer-events:none;
 }
 .frombsy-card::after{
   content:'';position:absolute;right:-24px;top:-34px;width:110px;height:110px;border-radius:50%;
@@ -534,19 +539,57 @@ dialog::backdrop{background:rgba(5,8,18,.7);-webkit-backdrop-filter:blur(4px);ba
 }
 .frombsy-card:active{transform:translateY(0)}
 .frombsy-logo{
-  width:40px;height:40px;border-radius:10px;background:#00adb5;display:grid;place-items:center;
-  flex-shrink:0;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.3);
+  width:40px;height:40px;border-radius:12px;background:none;display:grid;place-items:center;
+  flex-shrink:0;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.22);
 }
 .frombsy-logo img{width:100%;height:100%;display:block}
+.frombsy-copy{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .frombsy-name{
   font-size:13px;font-weight:800;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
+.frombsy-sub{
+  font-size:8px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;line-height:1.35;
+  color:rgba(200,215,255,.55);white-space:normal;overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+}
 .frombsy-card .ic{margin-left:auto;color:#b9cdff;flex-shrink:0;transition:transform .2s}
 .frombsy-card:hover .ic{transform:translate(2px,-2px)}
-.frombsy-desktop{margin-top:8px}
+.frombsy-desktop{margin-top:12px}
 .frombsy-mobile{display:none;margin-top:20px}
-@media(max-width:1099px){
-  body[data-game="lobby"] .frombsy-mobile{display:flex}
+.game-card.gc-frombsy{
+  display:none;text-decoration:none;
+  background:
+    linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px),
+    radial-gradient(240px 160px at 50% 12%,rgba(55,92,214,.55),transparent 70%),
+    linear-gradient(180deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.02) 38%,rgba(0,0,0,.35) 100%),
+    linear-gradient(165deg,#0b1a42 0%,#050a18 55%,#03060f 100%);
+  background-size:22px 22px,22px 22px,auto,auto,auto;
+  border-color:rgba(111,155,255,.28);
+}
+.game-card.gc-frombsy::before{
+  content:'';position:absolute;left:50%;top:50px;width:100px;height:100px;margin-left:-50px;margin-top:-50px;
+  border-radius:50%;border:1px dashed rgba(140,170,255,.2);box-shadow:0 0 55px rgba(111,155,255,.16);
+  pointer-events:none;
+}
+.game-card.gc-frombsy::after{
+  content:'';position:absolute;left:50%;top:50px;width:80px;height:80px;margin-left:-40px;margin-top:-40px;
+  border-radius:50%;background:radial-gradient(circle,rgba(0,173,181,.2),transparent 70%);pointer-events:none;
+}
+.game-card.gc-frombsy .frombsy-logo{
+  position:absolute;left:50%;top:26px;transform:translateX(-50%);width:48px;height:48px;border-radius:13px;
+  z-index:1;box-shadow:0 10px 24px rgba(0,0,0,.35);
+}
+.game-card.gc-frombsy h4{color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.game-card.gc-frombsy p{color:rgba(200,215,255,.78);text-shadow:none}
+@media(max-width:720px){
+  .game-card.gc-frombsy{display:flex;min-height:210px}
+}
+@media(min-width:721px) and (max-width:1099px){
+  body[data-game="lobby"] .frombsy-mobile{display:flex;padding:16px;min-height:104px}
+  .frombsy-mobile .frombsy-logo{width:52px;height:52px;border-radius:14px}
+  .frombsy-mobile .frombsy-name{font-size:16px}
+  .frombsy-mobile .frombsy-sub{font-size:9px;letter-spacing:.09em}
 }
 @media(min-width:1100px){
   .nav{left:248px}
@@ -711,12 +754,15 @@ dialog::backdrop{background:rgba(20,40,58,.35)}
   <button class="side-item" data-filter="okey" onclick="sideNav('okey')"><img src="img/okey-sm.webp" alt="">101 Okey<span class="count" id="sideCount_okey"></span></button>
   <button class="side-item" data-filter="monopoly" onclick="sideNav('monopoly')"><img src="img/monopoly-sm.webp" alt="">Monopoly<span class="count" id="sideCount_monopoly"></span></button>
   <button class="side-item" data-filter="uno" onclick="sideNav('uno')"><img src="img/uno-sm.webp" alt="">UNO<span class="count" id="sideCount_uno"></span></button>
-  <div class="side-foot">Puanlar ve bakiyeler tüm cihazlarda canlı olarak senkronize edilir.</div>
   <a class="frombsy-card frombsy-desktop" href="https://batuhansavas-yilmaz.github.io/frombsy/" target="_blank" rel="noopener noreferrer" aria-label="From B.S.Y. sitesini aç">
-    <span class="frombsy-logo"><img src="img/frombsy-logo.png" alt=""></span>
-    <span class="frombsy-name">From B.S.Y.</span>
+    <span class="frombsy-logo"><img src="img/frombsy-square.png" alt=""></span>
+    <span class="frombsy-copy">
+      <span class="frombsy-name">From B.S.Y.</span>
+      <span class="frombsy-sub">Hayatı Kolaylaştıran Ürünler</span>
+    </span>
     <i data-ic="arrowOut" data-cls="ic-sm"></i>
   </a>
+  <div class="side-foot">Puanlar ve bakiyeler tüm cihazlarda canlı olarak senkronize edilir.</div>
 </aside>
 <main>
   <section id="roomsPage" class="page active"></section>
@@ -727,8 +773,11 @@ dialog::backdrop{background:rgba(20,40,58,.35)}
   <section id="unoSetupPage" class="page"></section>
   <section id="unoGamePage" class="page"></section>
   <a class="frombsy-card frombsy-mobile" href="https://batuhansavas-yilmaz.github.io/frombsy/" target="_blank" rel="noopener noreferrer" aria-label="From B.S.Y. sitesini aç">
-    <span class="frombsy-logo"><img src="img/frombsy-logo.png" alt=""></span>
-    <span class="frombsy-name">From B.S.Y.</span>
+    <span class="frombsy-logo"><img src="img/frombsy-square.png" alt=""></span>
+    <span class="frombsy-copy">
+      <span class="frombsy-name">From B.S.Y.</span>
+      <span class="frombsy-sub">Hayatı Kolaylaştıran Ürünler</span>
+    </span>
     <i data-ic="arrowOut" data-cls="ic-sm"></i>
   </a>
 </main>
@@ -1291,7 +1340,13 @@ function renderRoomsList(){
         <p>${info.desc}</p>
         <button class="btn primary sm" onclick="openRoomDialog('${g}')">${ic('plus')}Masa aç</button>
       </article>`;
-  }).join('');
+  }).join('')+`
+      <a class="game-card gc-frombsy" href="https://batuhansavas-yilmaz.github.io/frombsy/" target="_blank" rel="noopener noreferrer" aria-label="From B.S.Y. sitesini aç">
+        <span class="frombsy-logo"><img src="img/frombsy-square.png" alt=""></span>
+        <h4>From B.S.Y.</h4>
+        <p>Hayatı Kolaylaştıran Ürünler</p>
+        <span class="btn primary sm">From B.S.Y.${ic('arrowOut','ic-sm')}</span>
+      </a>`;
   document.getElementById('roomCount').textContent=keys.length;
   syncSidebar();
   document.getElementById('roomFilterBar').style.display=allKeys.length?'':'none';
