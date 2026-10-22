@@ -557,33 +557,19 @@ dialog::backdrop{background:rgba(5,8,18,.7);-webkit-backdrop-filter:blur(4px);ba
 .frombsy-desktop{margin-top:12px}
 .frombsy-mobile{display:none;margin-top:20px}
 .game-card.gc-frombsy{
-  display:none;text-decoration:none;
-  background:
-    linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px),
-    radial-gradient(240px 160px at 50% 12%,rgba(55,92,214,.55),transparent 70%),
-    linear-gradient(180deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.02) 38%,rgba(0,0,0,.35) 100%),
-    linear-gradient(165deg,#0b1a42 0%,#050a18 55%,#03060f 100%);
-  background-size:22px 22px,22px 22px,auto,auto,auto;
+  display:none;text-decoration:none;min-height:230px;background-color:#050a18;
+  background-image:
+    linear-gradient(180deg,rgba(5,10,24,0) 0%,rgba(5,10,24,.08) 42%,rgba(5,10,24,.86) 62%,#050a18 78%),
+    url(img/frombsy-card.png);
+  background-repeat:no-repeat;
+  background-size:100% 100%,100% auto;
+  background-position:top center,top center;
   border-color:rgba(111,155,255,.28);
 }
-.game-card.gc-frombsy::before{
-  content:'';position:absolute;left:50%;top:50px;width:100px;height:100px;margin-left:-50px;margin-top:-50px;
-  border-radius:50%;border:1px dashed rgba(140,170,255,.2);box-shadow:0 0 55px rgba(111,155,255,.16);
-  pointer-events:none;
-}
-.game-card.gc-frombsy::after{
-  content:'';position:absolute;left:50%;top:50px;width:80px;height:80px;margin-left:-40px;margin-top:-40px;
-  border-radius:50%;background:radial-gradient(circle,rgba(0,173,181,.2),transparent 70%);pointer-events:none;
-}
-.game-card.gc-frombsy .frombsy-logo{
-  position:absolute;left:50%;top:26px;transform:translateX(-50%);width:48px;height:48px;border-radius:13px;
-  z-index:1;box-shadow:0 10px 24px rgba(0,0,0,.35);
-}
-.game-card.gc-frombsy h4{color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.5)}
-.game-card.gc-frombsy p{color:rgba(200,215,255,.78);text-shadow:none}
+.game-card.gc-frombsy h4{color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.65)}
+.game-card.gc-frombsy p{color:rgba(200,215,255,.8);text-shadow:0 1px 10px rgba(0,0,0,.6)}
 @media(max-width:720px){
-  .game-card.gc-frombsy{display:flex;min-height:210px}
+  .game-card.gc-frombsy{display:flex}
 }
 @media(min-width:721px) and (max-width:1099px){
   body[data-game="lobby"] .frombsy-mobile{display:flex;padding:16px;min-height:104px}
@@ -1341,11 +1327,10 @@ function renderRoomsList(){
         <button class="btn primary sm" onclick="openRoomDialog('${g}')">${ic('plus')}Masa aç</button>
       </article>`;
   }).join('')+`
-      <a class="game-card gc-frombsy" href="https://batuhansavas-yilmaz.github.io/frombsy/" target="_blank" rel="noopener noreferrer" aria-label="From B.S.Y. sitesini aç">
-        <span class="frombsy-logo"><img src="img/frombsy-square.png" alt=""></span>
+      <a class="game-card gc-frombsy" href="https://batuhansavas-yilmaz.github.io/frombsy/" target="_blank" rel="noopener noreferrer" aria-label="From B.S.Y. sitesini incele">
         <h4>From B.S.Y.</h4>
         <p>Hayatı Kolaylaştıran Ürünler</p>
-        <span class="btn primary sm">From B.S.Y.${ic('arrowOut','ic-sm')}</span>
+        <span class="btn primary sm">İncele${ic('arrowOut','ic-sm')}</span>
       </a>`;
   document.getElementById('roomCount').textContent=keys.length;
   syncSidebar();
