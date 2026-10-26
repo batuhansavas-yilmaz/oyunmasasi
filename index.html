@@ -9,6 +9,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Oyun Masası">
 <link rel="stylesheet" href="assets/fonts/fonts.css">
 <style>
@@ -707,9 +709,10 @@ dialog::backdrop{background:rgba(20,40,58,.35)}
   }
 }
 
-/* Sabit appbar, yalnızca içerik kaydırma */
+</style>
+<style>
 html{height:100%;overflow:hidden}
-body{height:100vh;height:100dvh;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+body{height:100vh;height:100dvh;min-height:0;overflow:hidden;display:flex;flex-direction:column;background-color:var(--bg);overscroll-behavior:none}
 .appbar{position:relative;top:auto;flex:0 0 auto;height:calc(64px + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);z-index:10}
 .shell{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
 @media(min-width:1100px){
@@ -877,6 +880,7 @@ const roomsRef=db.ref('rooms');
    ORTAK DURUM
    ========================================================= */
 let roomsData={};
+try{const cached=localStorage.getItem('oyunmasasi-rooms');if(cached)roomsData=JSON.parse(cached)||{};}catch(e){}
 let currentRoomKey=null;
 let pendingRoomKey=null;
 let pendingRoomAction=null;
@@ -931,7 +935,11 @@ function patchScoreInputs(){
 }
 
 roomsRef.on('value',(snap)=>{
-  roomsData=snap.val()||{};
+  const val=snap.val()||{};
+  if(navigator.onLine||Object.keys(val).length){
+    roomsData=val;
+    try{localStorage.setItem('oyunmasasi-rooms',JSON.stringify(val));}catch(e){}
+  }
   syncCurrentRoomState();
   const sig=scoreSig();
   if(sig!==null&&sig===lastScoreSig){patchScoreInputs();return;}
@@ -2383,6 +2391,9 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   });
+}
+if (navigator.storage && navigator.storage.persist) {
+  navigator.storage.persist().catch(() => {});
 }
 </script>
 

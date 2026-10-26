@@ -1,4 +1,4 @@
-const CACHE_NAME = 'oyunmasasi-v2';
+const CACHE_NAME = 'oyunmasasi-v3';
 const FONT_CACHE = 'oyunmasasi-fonts-v1';
 const APP_SHELL = [
   './',
