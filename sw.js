@@ -1,4 +1,4 @@
-const CACHE_NAME = 'oyunmasasi-v4';
+const CACHE_NAME = 'oyunmasasi-v5';
 const FONT_CACHE = 'oyunmasasi-fonts-v1';
 const APP_SHELL = [
   './',
@@ -15,7 +15,7 @@ const APP_SHELL = [
   './icon-192.png',
   './icon-512.png',
   './icon-maskable-512.png',
-  './img/frombsy-card.png',
+  './img/frombsy-logo.png',
   './img/frombsy-square.png',
   './img/hero.webp',
   './img/monopoly-sm.webp',
@@ -38,7 +38,7 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
       .then((keys) => Promise.all(
-        keys.filter((key) => key !== CACHE_NAME && key !== FONT_CACHE)
+        keys.filter((key) => key.startsWith('oyunmasasi-') && key !== CACHE_NAME && key !== FONT_CACHE)
           .map((key) => caches.delete(key))
       ))
       .then(() => self.clients.claim())

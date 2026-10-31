@@ -557,17 +557,54 @@ dialog::backdrop{background:rgba(5,8,18,.7);-webkit-backdrop-filter:blur(4px);ba
 .frombsy-desktop{margin-top:12px}
 .frombsy-mobile{display:none;margin-top:20px}
 .game-card.gc-frombsy{
-  display:none;text-decoration:none;min-height:230px;background-color:#050a18;
+  display:none;text-decoration:none;min-height:280px;padding:18px;
+  background-color:#050a18;
   background-image:
-    linear-gradient(180deg,rgba(5,10,24,0) 0%,rgba(5,10,24,.08) 42%,rgba(5,10,24,.86) 62%,#050a18 78%),
-    url(img/frombsy-card.png);
-  background-repeat:no-repeat;
-  background-size:100% 100%,100% auto;
-  background-position:top center,top center;
+    linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px),
+    radial-gradient(240px 150px at 50% 0%,rgba(55,92,214,.5),transparent 72%),
+    linear-gradient(180deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,.02) 36%,rgba(0,0,0,.3) 100%),
+    linear-gradient(165deg,#0b1a42 0%,#050a18 55%,#03060f 100%);
+  background-repeat:repeat,repeat,no-repeat,no-repeat,no-repeat;
+  background-size:22px 22px,22px 22px,auto,auto,auto;
+  background-position:top left,top left,top center,center,center;
   border-color:rgba(111,155,255,.28);
+  box-shadow:0 14px 30px rgba(2,8,24,.26),inset 0 1px 0 rgba(255,255,255,.06);
+}
+.game-card.gc-frombsy:hover{
+  border-color:rgba(140,176,255,.55);
+  box-shadow:0 18px 38px rgba(2,8,24,.36),0 0 0 1px rgba(111,155,255,.12);
 }
 .game-card.gc-frombsy h4{color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.65)}
 .game-card.gc-frombsy p{color:rgba(200,215,255,.8);text-shadow:0 1px 10px rgba(0,0,0,.6)}
+.frombsy-orbit{
+  position:absolute;top:13px;left:50%;width:min(42%,140px);aspect-ratio:1;
+  transform:translateX(-50%);display:grid;place-items:center;pointer-events:none;z-index:0;
+}
+.frombsy-orbit::before{
+  content:'';position:absolute;inset:5%;border:1px solid rgba(140,170,255,.2);border-radius:50%;
+  box-shadow:0 0 48px rgba(111,155,255,.18);
+}
+.frombsy-orbit-ring{
+  position:absolute;inset:0;border:1px dashed rgba(160,190,255,.3);border-radius:50%;
+  animation:frombsy-orbit 46s linear infinite;
+}
+.frombsy-orbit-ring::before,
+.frombsy-orbit-ring::after{content:'';position:absolute;border-radius:50%}
+.frombsy-orbit-ring::before{
+  width:7px;height:7px;top:-3.5px;left:50%;margin-left:-3.5px;
+  background:#cfe0ff;box-shadow:0 0 12px rgba(160,190,255,.9);
+}
+.frombsy-orbit-ring::after{
+  width:5px;height:5px;bottom:10%;right:8%;
+  background:#7fe4d8;box-shadow:0 0 10px rgba(127,228,216,.9);
+}
+.frombsy-orbit-logo{
+  position:relative;z-index:1;width:60%;height:60%;aspect-ratio:1;border-radius:50%;
+  border:3px solid #fff;background:#11b5b5;object-fit:cover;
+  box-shadow:0 0 26px rgba(45,212,191,.36),0 12px 26px rgba(0,0,0,.38);
+}
+@keyframes frombsy-orbit{to{transform:rotate(360deg)}}
 @media(max-width:720px){
   .game-card.gc-frombsy{display:flex}
 }
@@ -675,6 +712,54 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .game-card .pill.empty{color:var(--text-2);background:rgba(255,255,255,.9);border:1px solid rgba(18,34,47,.06)}
 .game-card h4{color:var(--text);text-shadow:none}
 .game-card p{color:var(--text-2);text-shadow:none}
+.game-card.gc-frombsy{
+  background-color:#f4f8ff;
+  background-image:
+    linear-gradient(rgba(37,99,235,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(37,99,235,.055) 1px,transparent 1px),
+    radial-gradient(240px 150px at 50% 0%,rgba(147,197,253,.6),transparent 72%),
+    linear-gradient(160deg,#eef6ff 0%,#f9fcff 52%,#eaf2ff 100%);
+  background-repeat:repeat,repeat,no-repeat,no-repeat;
+  background-size:22px 22px,22px 22px,auto,auto;
+  background-position:top left,top left,top center,center;
+  border-color:rgba(37,99,235,.2);
+  box-shadow:0 14px 32px rgba(30,64,92,.12),inset 0 1px 0 rgba(255,255,255,.7);
+}
+.game-card.gc-frombsy:hover{
+  border-color:rgba(37,99,235,.4);
+  box-shadow:0 18px 38px rgba(30,64,92,.16);
+}
+.game-card.gc-frombsy h4{color:#0b1f44;text-shadow:none}
+.game-card.gc-frombsy p{color:#475b80;text-shadow:none}
+.frombsy-orbit::before{border-color:rgba(37,99,235,.2);box-shadow:0 0 48px rgba(37,99,235,.14)}
+.frombsy-orbit-ring{border-color:rgba(37,99,235,.28)}
+.frombsy-orbit-ring::before{background:#2563eb;box-shadow:0 0 12px rgba(37,99,235,.55)}
+.frombsy-orbit-ring::after{background:#0f766e;box-shadow:0 0 10px rgba(15,118,110,.45)}
+.frombsy-orbit-logo{box-shadow:0 0 24px rgba(37,99,235,.26),0 12px 24px rgba(30,64,92,.18)}
+.frombsy-card{
+  color:#0b1f44;
+  background-color:#f7fbff;
+  background-image:
+    linear-gradient(rgba(37,99,235,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(37,99,235,.045) 1px,transparent 1px),
+    radial-gradient(230px 130px at 24% 0%,rgba(147,197,253,.55),transparent 72%),
+    linear-gradient(160deg,#f7fbff 0%,#eef6ff 55%,#e5f1ff 100%);
+  background-repeat:repeat,repeat,no-repeat,no-repeat;
+  background-size:22px 22px,22px 22px,auto,auto;
+  background-position:top left,top left,top center,center;
+  border-color:rgba(37,99,235,.2);
+  box-shadow:0 12px 26px rgba(30,64,92,.1),inset 0 1px 0 rgba(255,255,255,.75);
+}
+.frombsy-card::before{border-color:rgba(37,99,235,.18);box-shadow:0 0 44px rgba(37,99,235,.1)}
+.frombsy-card::after{background:radial-gradient(circle,rgba(15,118,110,.14),transparent 70%)}
+.frombsy-card:hover{
+  border-color:rgba(37,99,235,.4);
+  box-shadow:0 16px 32px rgba(30,64,92,.14),0 0 0 1px rgba(37,99,235,.08);
+}
+.frombsy-name{color:#0b1f44}
+.frombsy-sub{color:#526a93}
+.frombsy-card .ic{color:#2563eb}
+.frombsy-logo{box-shadow:0 4px 12px rgba(30,64,92,.16)}
 .badge.g-monopoly{background:var(--green-soft);color:var(--green)}
 .badge.g-okey{background:var(--gold-soft);color:var(--gold)}
 .badge.g-uno{background:var(--red-soft);color:var(--red)}
@@ -1395,6 +1480,10 @@ function renderRoomsList(){
       </article>`;
   }).join('')+`
       <a class="game-card gc-frombsy" href="https://batuhansavas-yilmaz.github.io/frombsy/" target="_blank" rel="noopener noreferrer" aria-label="From B.S.Y. sitesini incele">
+        <span class="frombsy-orbit" aria-hidden="true">
+          <span class="frombsy-orbit-ring"></span>
+          <img class="frombsy-orbit-logo" src="img/frombsy-logo.png" alt="">
+        </span>
         <h4>From B.S.Y.</h4>
         <p>Hayatı Kolaylaştıran Ürünler</p>
         <span class="btn primary sm">İncele${ic('arrowOut','ic-sm')}</span>
